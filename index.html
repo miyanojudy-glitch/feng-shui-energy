@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风水实用指南 - 工位/家居摆什么最转运</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a472a;
+            --primary-light: #2d6b4a;
+            --secondary: #d4a574;
+            --accent: #c9a227;
+            --accent-glow: #e8c84a;
+            --bg-dark: #0a1510;
+            --bg-card: #0f1f17;
+            --bg-card-hover: #152a1e;
+            --text-primary: #f0e6d3;
+            --text-secondary: #a89880;
+            --text-muted: #6b5d4d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(26, 71, 42, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(201, 162, 39, 0.2) 0%, transparent 50%);
+            animation: bgPulse 10s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        h1 { font-size: 1.8rem; font-weight: 500; letter-spacing: 0.05em; }
+        .subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.5rem; }
+
+        /* 步骤 */
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border-radius: 25px;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .step.active {
+            background: var(--primary);
+            border-color: var(--accent);
+            color: var(--accent-glow);
+        }
+
+        .step-num {
+            width: 20px; height: 20px;
+            background: rgba(201, 162, 39, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .step.active .step-num { background: var(--accent); color: var(--bg-dark); }
+
+        /* 内容卡片 */
+        .content-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.15rem;
+            margin-bottom: 1.25rem;
+            color: var(--secondary);
+        }
+
+        /* 场景选择 */
+        .scene-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .scene-btn {
+            background: rgba(26, 71, 42, 0.3);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 1rem 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .scene-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--secondary);
+        }
+
+        .scene-btn.selected {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(201, 162, 39, 0.3);
+        }
+
+        .scene-icon { font-size: 1.8rem; margin-bottom: 0.35rem; }
+        .scene-name { font-size: 0.85rem; color: var(--text-primary); }
+
+        /* 朝向选择 */
+        .direction-section { margin-top: 1.5rem; }
+
+        .direction-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            max-width: 320px;
+            margin: 0 auto 1rem;
+        }
+
+        .dir-btn {
+            background: var(--bg-card);
+            border: 2px solid var(--primary-light);
+            border-radius: 10px;
+            padding: 0.8rem 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .dir-btn:hover { border-color: var(--secondary); color: var(--text-primary); }
+
+        .dir-btn.selected {
+            background: var(--primary);
+            border-color: var(--accent);
+            color: var(--accent-glow);
+        }
+
+        /* 运势选择 */
+        .fortune-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .fortune-btn {
+            background: var(--bg-card);
+            border: 2px solid var(--primary-light);
+            border-radius: 12px;
+            padding: 1rem 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .fortune-btn:hover { transform: translateY(-2px); border-color: var(--secondary); }
+
+        .fortune-btn.selected {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.2), rgba(26, 71, 42, 0.3));
+        }
+
+        .fortune-icon { font-size: 1.5rem; margin-bottom: 0.35rem; }
+        .fortune-name { font-size: 0.8rem; color: var(--text-secondary); }
+        .fortune-btn.selected .fortune-name { color: var(--accent-glow); }
+
+        /* 按钮 */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: none;
+            border-radius: 25px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(26, 71, 42, 0.4); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #b8912a);
+            color: var(--bg-dark);
+            font-weight: 600;
+        }
+
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-group { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+
+        .hidden { display: none !important; }
+
+        /* 结果 */
+        .result-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .result-title { font-size: 1.2rem; color: var(--accent-glow); margin-bottom: 0.35rem; }
+        .result-desc { color: var(--text-secondary); font-size: 0.85rem; }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .result-grid { grid-template-columns: 1fr; }
+        }
+
+        .direction-result {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.25rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .direction-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .direction-label .icon { font-size: 1.3rem; }
+
+        .suggestion-list { list-style: none; }
+
+        .suggestion-item {
+            padding: 0.75rem;
+            background: rgba(26, 71, 42, 0.2);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .suggestion-item:last-child { margin-bottom: 0; }
+
+        .item-main {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .item-icon { font-size: 1.3rem; }
+        .item-text { font-size: 0.9rem; color: var(--text-primary); flex: 1; }
+
+        .item-reason {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            padding-left: 1.75rem;
+        }
+
+        .theory-note {
+            background: rgba(201, 162, 39, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        .theory-note h4 { color: var(--secondary); margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .theory-note p { color: var(--text-secondary); line-height: 1.5; }
+
+        .bazi-input {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .bazi-input label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+        }
+
+        .bazi-input input, .bazi-input select {
+            width: 100%;
+            padding: 0.7rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--primary-light);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .bazi-input input:focus, .bazi-input select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .bazi-toggle {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .bazi-toggle label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .mingge-result {
+            background: linear-gradient(135deg, rgba(26, 71, 42, 0.3), rgba(201, 162, 39, 0.1));
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .mingge-title {
+            font-size: 1.1rem;
+            color: var(--accent-glow);
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .mingge-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .mingge-item {
+            background: var(--bg-dark);
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .mingge-item-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+        }
+
+        .mingge-item-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .xingyongshen {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(201, 162, 39, 0.15);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .xingyongshen-title {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .xingyongshen-value {
+            font-size: 1.2rem;
+            color: var(--accent-glow);
+            font-weight: 600;
+        }
+
+        .wuxing-tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin: 0.15rem;
+        }
+
+        .wuxing-wood { background: rgba(34, 139, 34, 0.3); color: #90EE90; }
+        .wuxing-fire { background: rgba(255, 69, 0, 0.3); color: #FFA07A; }
+        .wuxing-earth { background: rgba(205, 133, 63, 0.3); color: #DEB887; }
+        .wuxing-metal { background: rgba(192, 192, 192, 0.3); color: #C0C0C0; }
+        .wuxing-water { background: rgba(30, 144, 255, 0.3); color: #87CEEB; }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <div class="container">
+        <div class="hero">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#c9a227" stroke-width="2"/>
+                    <path d="M50 5 L50 95 M5 50 L95 50" stroke="#c9a227" stroke-width="1.5"/>
+                    <path d="M50 5 L65 35 L50 25 L35 35 Z" fill="#c9a227"/>
+                    <path d="M50 95 L35 65 L50 75 L65 65 Z" fill="#c9a227"/>
+                    <path d="M5 50 L35 35 L25 50 L35 65 Z" fill="#c9a227"/>
+                    <path d="M95 50 L65 65 L75 50 L65 35 Z" fill="#c9a227"/>
+                    <circle cx="50" cy="50" r="8" fill="#c9a227"/>
+                </svg>
+                <h1>风水实用指南</h1>
+            </div>
+            <p class="subtitle">你的坐向 × 想提升的运势 = 该在哪儿摆什么</p>
+        </div>
+
+        <div class="steps">
+            <div class="step active" data-step="1"><span class="step-num">1</span>场景</div>
+            <div class="step" data-step="2"><span class="step-num">2</span>坐向</div>
+            <div class="step" data-step="3"><span class="step-num">3</span>运势</div>
+            <div class="step" data-step="4"><span class="step-num">+</span>八字</div>
+            <div class="step" data-step="5"><span class="step-num">5</span>结果</div>
+        </div>
+
+        <!-- 步骤1: 场景选择 -->
+        <div class="content-card" id="step1">
+            <h3 class="section-title">🏠 你在哪个空间？</h3>
+            <div class="scene-grid">
+                <div class="scene-btn" data-scene="desk">
+                    <div class="scene-icon">💼</div>
+                    <div class="scene-name">工位/办公桌</div>
+                </div>
+                <div class="scene-btn" data-scene="living">
+                    <div class="scene-icon">🛋️</div>
+                    <div class="scene-name">客厅沙发</div>
+                </div>
+                <div class="scene-btn" data-scene="bed">
+                    <div class="scene-icon">🛏️</div>
+                    <div class="scene-name">卧室床位</div>
+                </div>
+                <div class="scene-btn" data-scene="deskChair">
+                    <div class="scene-icon">🪑</div>
+                    <div class="scene-name">书桌/学习位</div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="next1" disabled>下一步 →</button>
+            </div>
+        </div>
+
+        <!-- 步骤2: 坐向选择 -->
+        <div class="content-card hidden" id="step2">
+            <h3 class="section-title">🧭 你的坐向是什么？</h3>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                比如"坐东朝西"就是你背靠东方面朝西方
+            </p>
+
+            <div class="direction-section">
+                <div class="direction-grid">
+                    <button class="dir-btn" data-dir="east">坐东朝西</button>
+                    <button class="dir-btn" data-dir="south">坐南朝北</button>
+                    <button class="dir-btn" data-dir="west">坐西朝东</button>
+                    <button class="dir-btn" data-dir="north">坐北朝南</button>
+                    <button class="dir-btn" data-dir="se">坐东南朝西北</button>
+                    <button class="dir-btn" data-dir="sw">坐西南朝东北</button>
+                    <button class="dir-btn" data-dir="ne">坐东北朝西南</button>
+                    <button class="dir-btn" data-dir="nw">坐西北朝东南</button>
+                </div>
+            </div>
+
+            <div class="tip">
+                💡 不知道？太阳升起是东落下是西，背对太阳就是朝东坐
+            </div>
+
+            <div class="btn-group">
+                <button class="btn" id="back2">← 上一步</button>
+                <button class="btn btn-primary" id="next2" disabled>下一步 →</button>
+            </div>
+        </div>
+
+        <!-- 步骤3: 运势选择 -->
+        <div class="content-card hidden" id="step3">
+            <h3 class="section-title">🎯 你想提升什么？</h3>
+            <div class="fortune-grid">
+                <div class="fortune-btn" data-fortune="wealth">
+                    <div class="fortune-icon">💰</div>
+                    <div class="fortune-name">财运</div>
+                </div>
+                <div class="fortune-btn" data-fortune="career">
+                    <div class="fortune-icon">💼</div>
+                    <div class="fortune-name">事业</div>
+                </div>
+                <div class="fortune-btn" data-fortune="love">
+                    <div class="fortune-icon">❤️</div>
+                    <div class="fortune-name">桃花</div>
+                </div>
+                <div class="fortune-btn" data-fortune="study">
+                    <div class="fortune-icon">📚</div>
+                    <div class="fortune-name">学业</div>
+                </div>
+                <div class="fortune-btn" data-fortune="health">
+                    <div class="fortune-icon">💪</div>
+                    <div class="fortune-name">健康</div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn" id="back3">← 上一步</button>
+                <button class="btn btn-primary" id="next3" disabled>下一步 →</button>
+            </div>
+        </div>
+
+        <!-- 步骤3.5: 生辰八字（可选） -->
+        <div class="content-card hidden" id="step35">
+            <h3 class="section-title">📜 想更精准？输入生辰八字</h3>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                可选输入，生成完全定制化的命理建议
+            </p>
+
+            <div class="bazi-input">
+                <div>
+                    <label>出生年份</label>
+                    <select id="baziYear">
+                        <option value="">选择年份</option>
+                    </select>
+                </div>
+                <div>
+                    <label>出生月份</label>
+                    <select id="baziMonth">
+                        <option value="">选择月份</option>
+                    </select>
+                </div>
+                <div>
+                    <label>出生日期</label>
+                    <select id="baziDay">
+                        <option value="">选择日期</option>
+                    </select>
+                </div>
+                <div>
+                    <label>出生时辰</label>
+                    <select id="baziHour">
+                        <option value="">选择时辰</option>
+                        <option value="子">子时 (23:00-01:00)</option>
+                        <option value="丑">丑时 (01:00-03:00)</option>
+                        <option value="寅">寅时 (03:00-05:00)</option>
+                        <option value="卯">卯时 (05:00-07:00)</option>
+                        <option value="辰">辰时 (07:00-09:00)</option>
+                        <option value="巳">巳时 (09:00-11:00)</option>
+                        <option value="午">午时 (11:00-13:00)</option>
+                        <option value="未">未时 (13:00-15:00)</option>
+                        <option value="申">申时 (15:00-17:00)</option>
+                        <option value="酉">酉时 (17:00-19:00)</option>
+                        <option value="戌">戌时 (19:00-21:00)</option>
+                        <option value="亥">亥时 (21:00-23:00)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mingge-result hidden" id="minggeResult">
+                <h4 class="mingge-title">✨ 你的命格分析</h4>
+                <div class="mingge-grid">
+                    <div class="mingge-item">
+                        <div class="mingge-item-label">日主</div>
+                        <div class="mingge-item-value" id="rizhu">-</div>
+                    </div>
+                    <div class="mingge-item">
+                        <div class="mingge-item-label">命格</div>
+                        <div class="mingge-item-value" id="mingge">-</div>
+                    </div>
+                    <div class="mingge-item">
+                        <div class="mingge-item-label">五行强弱</div>
+                        <div class="mingge-item-value" id="wuxingStrength">-</div>
+                    </div>
+                    <div class="mingge-item">
+                        <div class="mingge-item-label">用神</div>
+                        <div class="mingge-item-value" id="yongshen">-</div>
+                    </div>
+                </div>
+                <div class="xingyongshen">
+                    <div class="xingyongshen-title">喜用神</div>
+                    <div class="xingyongshen-value" id="xiyongshen">-</div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn" id="skipBazi">跳过 →</button>
+                <button class="btn btn-primary" id="analyzeBazi" disabled>分析八字 →</button>
+            </div>
+        </div>
+
+        <!-- 步骤4: 结果 -->
+        <div class="content-card hidden" id="step4">
+            <div class="result-header">
+                <h3 class="result-title">✨ 你的风水建议</h3>
+                <p class="result-desc">根据你的坐向，这些方向摆这些最有效</p>
+            </div>
+
+            <div class="result-grid" id="resultGrid">
+            </div>
+
+            <div class="theory-note" id="theoryNote">
+                <h4>📖 原理说明</h4>
+                <p id="theoryText"></p>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn" id="back4">← 重新选择</button>
+                <button class="btn" id="restart">🔄 重新开始</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 坐向对应的四面八方映射
+        // 坐东朝西 = 背靠东，面朝西 = 背后是东，左边是北，右边是南，前面是西
+        const directionMap = {
+            east: { behind: '东', left: '北', front: '西', right: '南' },       // 坐东朝西
+            south: { behind: '南', left: '东', front: '北', right: '西' },     // 坐南朝北
+            west: { behind: '西', left: '南', front: '东', right: '北' },      // 坐西朝东
+            north: { behind: '北', left: '西', front: '南', right: '东' },     // 坐北朝南
+            se: { behind: '东南', left: '东北', front: '西北', right: '西南' }, // 坐东南朝西北
+            sw: { behind: '西南', left: '东南', front: '东北', right: '西北' }, // 坐西南朝东北
+            ne: { behind: '东北', left: '西北', front: '东南', right: '西南' }, // 坐东北朝西南
+            nw: { behind: '西北', left: '北', front: '东南', right: '南' }      // 坐西北朝东南
+        };
+
+        const dirLabels = {
+            behind: '背后（靠山位）',
+            left: '左边（青龙位）',
+            front: '前面（明堂位）',
+            right: '右边（白虎位）'
+        };
+
+        const dirIcons = {
+            behind: '🏔️',
+            left: '🐉',
+            front: '🌅',
+            right: '🐯'
+        };
+
+        // 风水建议数据库
+        const fengShuiDB = {
+            desk: {
+                wealth: {
+                    behind: [
+                        { icon: '🌿', item: '大型绿植', reason: '东/东南/北属木，木生火、火生土，土为财。背后有木靠山稳固。' }
+                    ],
+                    left: [
+                        { icon: '💧', item: '小型水杯/水培植物', reason: '木气生发，水生木，左边木气旺则财气汇聚。' }
+                    ],
+                    front: [
+                        { icon: '⚪', item: '金属物品（订书机、回形针筒）', reason: '前方属金，金生水，水为财。金属物品聚集财气。' }
+                    ],
+                    right: [
+                        { icon: '🏺', item: '陶瓷笔筒/紫砂摆件', reason: '西南/东北属土，土生金，右边放陶瓷稳固财运。' }
+                    ]
+                },
+                career: {
+                    behind: [
+                        { icon: '🏔️', item: '山景画/假山盆景', reason: '背后需要有靠山，主事业有靠山、贵人相助。' }
+                    ],
+                    left: [
+                        { icon: '📚', item: '书籍/文件夹', reason: '左边木气生发，文昌位利功名事业。' }
+                    ],
+                    front: [
+                        { icon: '💡', item: '台灯（白色光）', reason: '前方明亮主前程似锦，白光利于清晰思考。' }
+                    ],
+                    right: [
+                        { icon: '⚪', item: '金属座钟/奖杯', reason: '右边白虎位主权威，金属物品提升领导力。' }
+                    ]
+                },
+                love: {
+                    behind: [
+                        { icon: '🌸', item: '粉色靠垫/纱帘', reason: '背后桃花位，粉色激活感情运势。' }
+                    ],
+                    left: [
+                        { icon: '💐', item: '干花/假花', reason: '东/东南木气旺处放花木招引缘分。' }
+                    ],
+                    front: [
+                        { icon: '🕯️', item: '小台灯/蜡烛', reason: '前方离卦主桃花，暖光营造浪漫氛围。' }
+                    ],
+                    right: [
+                        { icon: '💑', item: '双人合照/成对物品', reason: '右边白虎位放成对物品，象征感情稳固。' }
+                    ]
+                },
+                study: {
+                    behind: [
+                        { icon: '📚', item: '书架（高过视线）', reason: '背后文昌位，书籍高置主学业进步、智慧提升。' }
+                    ],
+                    left: [
+                        { icon: '🌿', item: '小型绿植（文竹）', reason: '东/东南木气生发，利于思考记忆。' }
+                    ],
+                    front: [
+                        { icon: '💡', item: '台灯（白光）', reason: '前方坎卦主智慧，白光利于专注学习。' }
+                    ],
+                    right: [
+                        { icon: '🪴', item: '小型盆栽', reason: '右边木气旺处放绿植，提升学习效率。' }
+                    ]
+                },
+                health: {
+                    behind: [
+                        { icon: '🌿', item: '阔叶植物（如虎皮兰）', reason: '背后东/东北木气，主肝胆免疫系统。' }
+                    ],
+                    left: [
+                        { icon: '🪨', item: '水晶石/玉石', reason: '左边水木旺处放玉石，平衡身体健康。' }
+                    ],
+                    front: [
+                        { icon: '🧘', item: '小型静心物品', reason: '前方属火，火主心脑血管，宜静不宜闹。' }
+                    ],
+                    right: [
+                        { icon: '🏺', item: '陶瓷物品', reason: '右边土金位，放陶瓷稳固消化系统。' }
+                    ]
+                }
+            },
+            living: {
+                wealth: {
+                    behind: [
+                        { icon: '📺', item: '电视墙/背景墙', reason: '背后主财库，电视属火，火生土，土为财。' }
+                    ],
+                    left: [
+                        { icon: '🌿', item: '大型绿植（如发财树）', reason: '左边东/东南木气，木生火、火生土，大叶植物吸纳财气。' }
+                    ],
+                    front: [
+                        { icon: '🚪', item: '大门/通道', reason: '前方明堂主进气口，宜宽敞明亮，财气从前方进入。' }
+                    ],
+                    right: [
+                        { icon: '💧', item: '鱼缸/流水摆件', reason: '右边属金，水生木、金生水，水主财流动生财。' }
+                    ]
+                },
+                career: {
+                    behind: [
+                        { icon: '🏔️', item: '山景画/高柜', reason: '背后有靠山，主事业有靠山、职位稳固。' }
+                    ],
+                    left: [
+                        { icon: '📚', item: '书架/展示柜', reason: '左边文昌位，利事业功名、文化运势。' }
+                    ],
+                    front: [
+                        { icon: '🛋️', item: '沙发区', reason: '前方明堂开阔，主前程发展、社交人脉。' }
+                    ],
+                    right: [
+                        { icon: '⚪', item: '金属装饰/钟', reason: '右边白虎位主权威，金属物品提升领导力。' }
+                    ]
+                },
+                love: {
+                    behind: [
+                        { icon: '💑', item: '主沙发（双人位）', reason: '背后靠山稳固，主家庭和睦、感情稳定。' }
+                    ],
+                    left: [
+                        { icon: '🌸', item: '鲜花/干花', reason: '东/东南木气旺处放花木招引缘分。' }
+                    ],
+                    front: [
+                        { icon: '🕯️', item: '水晶灯/氛围灯', reason: '前方离卦主桃花，灯光温暖感情氛围。' }
+                    ],
+                    right: [
+                        { icon: '🕯️', item: '成对烛台/装饰', reason: '右边白虎位放成对物品，象征爱情成双成对。' }
+                    ]
+                },
+                study: {
+                    behind: [
+                        { icon: '📚', item: '书架（满而不乱）', reason: '背后文昌位，满书架主学业进步。' }
+                    ],
+                    left: [
+                        { icon: '🪴', item: '小型绿植', reason: '东/东南木气生发，利于思考学习。' }
+                    ],
+                    front: [
+                        { icon: '💡', item: '充足照明', reason: '前方坎卦主智慧，明亮光线利于专注。' }
+                    ],
+                    right: [
+                        { icon: '📖', item: '学习资料/文具', reason: '右边木气旺处放学习用品，提升效率。' }
+                    ]
+                },
+                health: {
+                    behind: [
+                        { icon: '🌿', item: '阔叶绿植', reason: '背后东/东北木气，主肝胆健康。' }
+                    ],
+                    left: [
+                        { icon: '🪨', item: '玉石/水晶', reason: '左边木水相生，玉石平衡气场。' }
+                    ],
+                    front: [
+                        { icon: '💡', item: '柔和灯光', reason: '前方宜柔和不刺眼，保护视力健康。' }
+                    ],
+                    right: [
+                        { icon: '🏺', item: '陶瓷摆件', reason: '右边土金位，陶瓷稳固消化系统。' }
+                    ]
+                }
+            },
+            bed: {
+                wealth: {
+                    behind: [
+                        { icon: '💰', item: '金属储蓄罐/招财猫', reason: '床头背后属木，金克木为财。' }
+                    ],
+                    left: [
+                        { icon: '🪴', item: '小型绿植', reason: '左边木气，床头木旺利睡眠质量，间接提升精力。' }
+                    ],
+                    front: [
+                        { icon: '🏺', item: '陶瓷工艺品', reason: '脚前属土，脚前放陶瓷稳固财库。' }
+                    ],
+                    right: [
+                        { icon: '⚪', item: '金属框架照片', reason: '右边金位，金属框加固事业财运。' }
+                    ]
+                },
+                career: {
+                    behind: [
+                        { icon: '🏔️', item: '山景画/小型假山', reason: '床头靠山稳固，主事业有靠山。' }
+                    ],
+                    left: [
+                        { icon: '📚', item: '书籍（不在床头）', reason: '左边文昌位，但书籍不宜放床头影响睡眠。' }
+                    ],
+                    front: [
+                        { icon: '⚪', item: '不摆电视/电子产品', reason: '脚前属火，电子产品主火旺影响睡眠和事业稳定。' }
+                    ],
+                    right: [
+                        { icon: '💡', item: '床头灯（柔光）', reason: '右边白虎位，柔和灯光利事业稳定。' }
+                    ]
+                },
+                love: {
+                    behind: [
+                        { icon: '💑', item: '婚纱照/双人照', reason: '床头背后主感情靠山，双人照增强夫妻缘。' }
+                    ],
+                    left: [
+                        { icon: '🌸', item: '粉色床品/纱帘', reason: '左边木气，粉色系激活桃花运。' }
+                    ],
+                    front: [
+                        { icon: '🕯️', item: '香薰蜡烛', reason: '脚前离卦主桃花，芳香蜡烛营造浪漫。' }
+                    ],
+                    right: [
+                        { icon: '💑', item: '成对物品', reason: '右边白虎位放成对物品，象征感情稳固。' }
+                    ]
+                },
+                study: {
+                    behind: [
+                        { icon: '📚', item: '书籍（不在床头）', reason: '背后文昌位，但不宜放床头影响睡眠质量。' }
+                    ],
+                    left: [
+                        { icon: '🪴', item: '小型绿植', reason: '左边木气生发，利青少年骨骼发育。' }
+                    ],
+                    front: [
+                        { icon: '💡', item: '小夜灯（暖光）', reason: '脚前坎卦主智慧，柔和光线不影响睡眠。' }
+                    ],
+                    right: [
+                        { icon: '🪴', item: '小型绿植', reason: '右边木气旺，植物释放氧气利学习精力。' }
+                    ]
+                },
+                health: {
+                    behind: [
+                        { icon: '🌿', item: '耐阴绿植（如绿萝）', reason: '床头背后木气，主肝胆，夜间释放氧气有利健康。' }
+                    ],
+                    left: [
+                        { icon: '🏺', item: '陶瓷摆件', reason: '左边土位，陶瓷稳固消化系统。' }
+                    ],
+                    front: [
+                        { icon: '🌙', item: '月光灯/柔光夜灯', reason: '脚前坎卦主肾，柔和光线不影响褪黑素。' }
+                    ],
+                    right: [
+                        { icon: '🧘', item: '小型香薰', reason: '右边金位，静心物品助眠和健康。' }
+                    ]
+                }
+            },
+            deskChair: {
+                wealth: {
+                    behind: [
+                        { icon: '🏺', item: '书柜（高过头顶）', reason: '背后属木，木生火、火生土，土为财，书柜高置主财运。' }
+                    ],
+                    left: [
+                        { icon: '💧', item: '水杯/水培植物', reason: '左边东/东南木气，水生木旺财气。' }
+                    ],
+                    front: [
+                        { icon: '⚪', item: '金属文具盒', reason: '前方属金，金属物品聚集财气。' }
+                    ],
+                    right: [
+                        { icon: '💰', item: '小型保险箱/收纳盒', reason: '右边金位，金属盒子聚财。' }
+                    ]
+                },
+                career: {
+                    behind: [
+                        { icon: '🏔️', item: '山景画/高书柜', reason: '背后靠山位，主事业有靠山、职位晋升。' }
+                    ],
+                    left: [
+                        { icon: '📚', item: '参考书/工具书', reason: '左边文昌位，工具书助事业进步。' }
+                    ],
+                    front: [
+                        { icon: '💡', item: '台灯（白光）', reason: '前方坎卦主智慧，白光利于专注工作。' }
+                    ],
+                    right: [
+                        { icon: '⚪', item: '订书机/打孔器', reason: '右边白虎位，金属工具提升执行力。' }
+                    ]
+                },
+                love: {
+                    behind: [
+                        { icon: '🌸', item: '粉色装饰', reason: '背后桃花位，粉色激活感情运势。' }
+                    ],
+                    left: [
+                        { icon: '💐', item: '干花/假花', reason: '左边木气旺处，花卉招引缘分。' }
+                    ],
+                    front: [
+                        { icon: '🕯️', item: '小台灯', reason: '前方离卦主桃花，灯光温暖。' }
+                    ],
+                    right: [
+                        { icon: '💑', item: '与TA的合照', reason: '右边白虎位放合照，增强感情稳定。' }
+                    ]
+                },
+                study: {
+                    behind: [
+                        { icon: '📚', item: '书架（高过视线）', reason: '背后文昌位，书籍高置主学业进步、专注力提升。' }
+                    ],
+                    left: [
+                        { icon: '🪴', item: '文竹/小型绿植', reason: '东/东南木气生发，利思考和记忆。' }
+                    ],
+                    front: [
+                        { icon: '💡', item: '台灯（白光）', reason: '前方坎卦主智慧，白光护眼利学习。' }
+                    ],
+                    right: [
+                        { icon: '📖', item: '当前学习资料', reason: '右边随手可取，放当前使用资料提升效率。' }
+                    ]
+                },
+                health: {
+                    behind: [
+                        { icon: '🌿', item: '阔叶植物', reason: '背后东/东北木气，主肝胆健康，久坐需要绿色护眼。' }
+                    ],
+                    left: [
+                        { icon: '🪨', item: '水晶球/玉石', reason: '左边木水相生，玉石平衡久坐不适。' }
+                    ],
+                    front: [
+                        { icon: '🧘', item: '小型静心物品', reason: '前方属火，不宜放置物，宜简洁。' }
+                    ],
+                    right: [
+                        { icon: '🏺', item: '陶瓷笔筒', reason: '右边土金位，陶瓷稳固消化系统，久坐健康。' }
+                    ]
+                }
+            }
+        };
+
+        // 原理说明
+        const theoryTexts = {
+            wealth: "财运核心：木→火→土的相生循环。东方木气生南方火，火生中央土，土即财富。背后靠木生火，前面明堂聚财，左右青龙白虎位平衡。",
+            career: "事业核心：靠山有势、明堂开阔。背后需要实体或意象的靠山（书柜/山画），前方明堂要开阔，左文昌右白虎平衡贵人与执行力。",
+            love: "桃花核心：木火通明、成双成对。东南木气生发，离卦（南）主桃花，木火通明处最利感情。成对物品象征稳固，左青龙右白虎平衡。",
+            study: "学业核心：文昌位与智慧位。东南为传统文昌位，主学业功名。坎卦（北）主智慧，充足光线和适当绿植提升专注力和记忆。",
+            health: "健康核心：五行平衡、阴阳调和。木气主生发利免疫，土气主稳固利消化，水火既济利心肾。注意背后不冲射、前方不堆积。"
+        };
+
+        // 初始化八字选项
+        function initBaziOptions() {
+            const yearSelect = document.getElementById('baziYear');
+            const monthSelect = document.getElementById('baziMonth');
+            const daySelect = document.getElementById('baziDay');
+
+            // 年份: 1940-2025
+            for (let year = 2025; year >= 1940; year--) {
+                const opt = document.createElement('option');
+                opt.value = year;
+                opt.textContent = year + '年';
+                yearSelect.appendChild(opt);
+            }
+
+            // 月份: 1-12
+            for (let month = 1; month <= 12; month++) {
+                const opt = document.createElement('option');
+                opt.value = month;
+                opt.textContent = month + '月';
+                monthSelect.appendChild(opt);
+            }
+
+            // 日期: 1-31
+            for (let day = 1; day <= 31; day++) {
+                const opt = document.createElement('option');
+                opt.value = day;
+                opt.textContent = day + '日';
+                daySelect.appendChild(opt);
+            }
+        }
+
+        // 八字天干地支
+        const tiangan = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+        const dizhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+
+        // 天干五行
+        const tganWuxing = {
+            '甲': '木', '乙': '木',
+            '丙': '火', '丁': '火',
+            '戊': '土', '己': '土',
+            '庚': '金', '辛': '金',
+            '壬': '水', '癸': '水'
+        };
+
+        // 地支五行
+        const dizhiWuxing = {
+            '子': '水', '丑': '土', '寅': '木', '卯': '木',
+            '辰': '土', '巳': '火', '午': '火', '未': '土',
+            '申': '金', '酉': '金', '戌': '土', '亥': '水'
+        };
+
+        // 日主五行（出生日的天干）
+        const rizhuWuxing = {
+            '甲': '木', '乙': '木',
+            '丙': '火', '丁': '火',
+            '戊': '土', '己': '土',
+            '庚': '金', '辛': '金',
+            '壬': '水', '癸': '水'
+        };
+
+        // 计算八字
+        function calculateBazi(year, month, day, hour) {
+            // 简化版：使用年份获取天干
+            // 1900年 = 庚子年
+            const baseYear = 1900;
+            const yearDiff = year - baseYear;
+            const tgIndex = (yearDiff + 6) % 10;
+            const dzIndex = (yearDiff + 8) % 12;
+
+            // 年干支
+            const yearTG = tiangan[tgIndex];
+            const yearDZ = dizhi[dzIndex];
+
+            // 月干支（简化）
+            const monthTG = tiangan[(tgIndex * 2 + month - 1) % 10];
+            const monthDZ = dizhi[(month + 1) % 12];
+
+            // 日干支（简化，使用蔡勒公式的简化版本）
+            const baseDate = new Date(1900, 0, 1);
+            const birthDate = new Date(year, month - 1, day);
+            const days = Math.floor((birthDate - baseDate) / (24 * 60 * 60 * 1000));
+            const dayTG = tiangan[(days + 6) % 10];
+            const dayDZ = dizhi[(days + 8) % 12];
+
+            // 时干支
+            const hourMap = { '子': 0, '丑': 1, '寅': 2, '卯': 3, '辰': 4, '巳': 5, '午': 6, '未': 7, '申': 8, '酉': 9, '戌': 10, '亥': 11 };
+            const hourIndex = hourMap[hour] || 0;
+            const hourTG = tiangan[(dayTG === '甲' || dayTG === '己' ? 0 : dayTG === '乙' || dayTG === '庚' ? 2 : dayTG === '丙' || dayTG === '辛' ? 4 : dayTG === '丁' || dayTG === '壬' ? 6 : 8) + Math.floor(hourIndex / 2)];
+            const hourDZ = dizhi[hourIndex];
+
+            return {
+                year: yearTG + yearDZ,
+                month: monthTG + monthDZ,
+                day: dayTG + dayDZ,
+                hour: hourTG + hourDZ
+            };
+        }
+
+        // 分析八字五行
+        function analyzeWuxing(bazi) {
+            const all = bazi.year + bazi.month + bazi.day + bazi.hour;
+            let wuxingCount = { 木: 0, 火: 0, 土: 0, 金: 0, 水: 0 };
+
+            // 统计天干五行
+            for (let char of all) {
+                if (tganWuxing[char]) wuxingCount[tganWuxing[char]]++;
+                if (dizhiWuxing[char]) wuxingCount[dizhiWuxing[char]]++;
+            }
+
+            return wuxingCount;
+        }
+
+        // 判断日主强弱
+        function judgeStrength(wuxingCount, dayTG) {
+            const rz = rizhuWuxing[dayTG];
+            const count = wuxingCount[rz];
+
+            if (count >= 3) return { strength: '强', desc: '偏旺' };
+            if (count >= 2) return { strength: '中', desc: '中和' };
+            return { strength: '弱', desc: '偏弱' };
+        }
+
+        // 确定喜用神
+        function getXiyongshen(wuxingCount, dayTG, strength) {
+            const rz = rizhuWuxing[dayTG];
+            const count = wuxingCount[rz];
+            const otherWuxing = ['木', '火', '土', '金', '水'].filter(w => w !== rz);
+
+            // 找出最弱的五行
+            let minCount = Infinity;
+            let weakest = '';
+            otherWuxing.forEach(w => {
+                if (wuxingCount[w] < minCount) {
+                    minCount = wuxingCount[w];
+                    weakest = w;
+                }
+            });
+
+            // 相生相克逻辑
+            const xiyong = [];
+            if (rz === '木') {
+                if (strength.strength === '弱') {
+                    xiyong.push('水', '木');
+                } else {
+                    xiyong.push('金', '土');
+                }
+            } else if (rz === '火') {
+                if (strength.strength === '弱') {
+                    xiyong.push('木', '火');
+                } else {
+                    xiyong.push('水', '金');
+                }
+            } else if (rz === '土') {
+                if (strength.strength === '弱') {
+                    xiyong.push('火', '土');
+                } else {
+                    xiyong.push('木', '水');
+                }
+            } else if (rz === '金') {
+                if (strength.strength === '弱') {
+                    xiyong.push('土', '金');
+                } else {
+                    xiyong.push('火', '木');
+                }
+            } else if (rz === '水') {
+                if (strength.strength === '弱') {
+                    xiyong.push('金', '水');
+                } else {
+                    xiyong.push('土', '火');
+                }
+            }
+
+            return xiyong.join('/');
+        }
+
+        // 确定命格
+        function getMingge(bazi, wuxingCount, dayTG) {
+            const rz = rzWuxing = rizhuWuxing[dayTG];
+            const maxWuxing = Object.keys(wuxingCount).reduce((a, b) => wuxingCount[a] > wuxingCount[b] ? a : b);
+
+            const combinations = {
+                '木木': '曲直格', '木火': '木火通明格', '木土': '木土相克格', '木金': '木金相克格', '木水': '木水相生格',
+                '火木': '木火通明格', '火火': '炎上格', '火土': '火土相生格', '火金': '火金相克格', '火水': '水火既济格',
+                '土木': '木土相克格', '土火': '火土相生格', '土土': '稼穑格', '土金': '土金相生格', '土水': '土水相克格',
+                '金木': '木金相克格', '金火': '火金相克格', '金土': '土金相生格', '金金': '从革格', '金水': '金水相生格',
+                '水木': '木水相生格', '水火': '水火既济格', '水土': '土水相克格', '水金': '金水相生格', '水水': '润下格'
+            };
+
+            const combo = rz + maxWuxing;
+            if (combinations[combo]) return combinations[combo];
+
+            // 特殊格局
+            const total = Object.values(wuxingCount).reduce((a, b) => a + b, 0);
+            if (wuxingCount[rz] / total > 0.4) return '身旺格';
+            if (wuxingCount[rz] / total < 0.2) return '从弱格';
+
+            return '中和格';
+        }
+
+        // 喜用神对应的五行颜色标签
+        function getWuxingClass(w) {
+            const map = { '木': 'wuxing-wood', '火': 'wuxing-fire', '土': 'wuxing-earth', '金': 'wuxing-metal', '水': 'wuxing-water' };
+            return map[w] || '';
+        }
+
+        // 存储分析结果
+        let baziResult = null;
+
+        // 执行八字分析
+        function analyzeBazi() {
+            const year = parseInt(document.getElementById('baziYear').value);
+            const month = parseInt(document.getElementById('baziMonth').value);
+            const day = parseInt(document.getElementById('baziDay').value);
+            const hour = document.getElementById('baziHour').value;
+
+            if (!year || !month || !day || !hour) return;
+
+            // 计算八字
+            const bazi = calculateBazi(year, month, day, hour);
+
+            // 分析五行
+            const wuxingCount = analyzeWuxing(bazi);
+
+            // 日干
+            const dayTG = bazi.day.charAt(0);
+
+            // 判断强弱
+            const strength = judgeStrength(wuxingCount, dayTG);
+
+            // 获取喜用神
+            const xiyongshen = getXiyongshen(wuxingCount, dayTG, strength);
+
+            // 命格
+            const mingge = getMingge(bazi, wuxingCount, dayTG);
+
+            // 存储结果
+            baziResult = {
+                bazi,
+                wuxingCount,
+                dayTG,
+                strength,
+                xiyongshen,
+                mingge
+            };
+
+            // 显示结果
+            document.getElementById('rizhu').textContent = dayTG + '（' + rizhuWuxing[dayTG] + '）';
+            document.getElementById('mingge').textContent = mingge;
+            document.getElementById('wuxingStrength').textContent = strength.desc;
+            document.getElementById('yongshen').textContent = xiyongshen.split('/')[0];
+
+            // 喜用神显示
+            const xiyongArr = xiyongshen.split('/');
+            document.getElementById('xiyongshen').innerHTML = xiyongArr.map(w =>
+                `<span class="wuxing-tag ${getWuxingClass(w)}">${w}</span>`
+            ).join(' ');
+
+            document.getElementById('minggeResult').classList.remove('hidden');
+            document.getElementById('analyzeBazi').textContent = '重新分析';
+        }
+
+        // 八字输入验证
+        function validateBaziInputs() {
+            const year = document.getElementById('baziYear').value;
+            const month = document.getElementById('baziMonth').value;
+            const day = document.getElementById('baziDay').value;
+            const hour = document.getElementById('baziHour').value;
+
+            const isValid = year && month && day && hour;
+            document.getElementById('analyzeBazi').disabled = !isValid;
+        }
+
+        // 生成结果（包含个性化建议）
+        function generateResult() {
+            const grid = document.getElementById('resultGrid');
+            grid.innerHTML = '';
+
+            const directions = directionMap[state.direction];
+            let data = fengShuiDB[state.scene][state.fortune];
+
+            // 如果有八字结果，个性化调整
+            if (baziResult) {
+                const xiyongArr = baziResult.xiyongshen.split('/');
+
+                // 在结果顶部显示命格信息
+                const minggeInfo = document.createElement('div');
+                minggeInfo.className = 'mingge-result';
+                minggeInfo.innerHTML = `
+                    <h4 class="mingge-title">✨ 基于你的命格定制建议</h4>
+                    <div class="mingge-grid">
+                        <div class="mingge-item">
+                            <div class="mingge-item-label">日主</div>
+                            <div class="mingge-item-value">${baziResult.dayTG}（${rizhuWuxing[baziResult.dayTG]}）</div>
+                        </div>
+                        <div class="mingge-item">
+                            <div class="mingge-item-label">命格</div>
+                            <div class="mingge-item-value">${baziResult.mingge}</div>
+                        </div>
+                    </div>
+                    <div class="xingyongshen">
+                        <div class="xingyongshen-title">你的喜用神: ${baziResult.xiyongshen}</div>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                            建议多使用${xiyongArr.map(w => w + '属性').join('、')}的物品来增强运势
+                        </p>
+                    </div>
+                `;
+                grid.appendChild(minggeInfo);
+            }
+
+            const positions = ['behind', 'left', 'front', 'right'];
+
+            positions.forEach(pos => {
+                const dirName = directions[pos];
+                let suggestions = data[pos] || [];
+
+                // 如果有八字结果，个性化调整建议
+                if (baziResult) {
+                    const xiyongArr = baziResult.xiyongshen.split('/');
+                    const rzWuxing = rizhuWuxing[baziResult.dayTG];
+
+                    // 调整建议顺序：喜用神相关的放前面
+                    suggestions = suggestions.map(s => {
+                        let priority = 0;
+                        const itemLower = s.item.toLowerCase();
+                        xiyongArr.forEach((xy, i) => {
+                            if (xy === '木' && (itemLower.includes('绿') || itemLower.includes('植') || itemLower.includes('木'))) priority += (3 - i);
+                            if (xy === '火' && (itemLower.includes('灯') || itemLower.includes('蜡') || itemLower.includes('火'))) priority += (3 - i);
+                            if (xy === '土' && (itemLower.includes('陶') || itemLower.includes('瓷') || itemLower.includes('土'))) priority += (3 - i);
+                            if (xy === '金' && (itemLower.includes('金') || itemLower.includes('属'))) priority += (3 - i);
+                            if (xy === '水' && (itemLower.includes('水') || itemLower.includes('玉'))) priority += (3 - i);
+                        });
+                        return { ...s, priority };
+                    });
+
+                    // 按优先级排序
+                    suggestions.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+                }
+
+                const div = document.createElement('div');
+                div.className = 'direction-result';
+                div.innerHTML = `
+                    <div class="direction-label">
+                        <span class="icon">${dirIcons[pos]}</span>
+                        <span>${dirLabels[pos]} - ${dirName}</span>
+                    </div>
+                    <ul class="suggestion-list">
+                        ${suggestions.map(s => `
+                            <li class="suggestion-item">
+                                <div class="item-main">
+                                    <span class="item-icon">${s.icon}</span>
+                                    <span class="item-text">${s.item}</span>
+                                </div>
+                                <p class="item-reason">${s.reason}</p>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                grid.appendChild(div);
+            });
+
+            // 原理说明
+            let theoryText = theoryTexts[state.fortune];
+            if (baziResult) {
+                theoryText += '\n\n【个性化提示】你的喜用神为' + baziResult.xiyongshen + '，在选择物品时，优先选择对应五行的物品效果更佳。';
+            }
+            document.getElementById('theoryText').textContent = theoryText;
+        }
+
+        // 状态
+        const state = { scene: null, direction: null, fortune: null };
+
+        const stepContents = [
+            document.getElementById('step1'),
+            document.getElementById('step2'),
+            document.getElementById('step3'),
+            document.getElementById('step35'),
+            document.getElementById('step4')
+        ];
+
+        function updateSteps(currentStep) {
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.toggle('active', index < currentStep);
+            });
+            stepContents.forEach((content, index) => {
+                content.classList.toggle('hidden', index !== currentStep - 1);
+            });
+        }
+
+        // 选择事件
+        document.querySelectorAll('.scene-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.scene-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                state.scene = btn.dataset.scene;
+                document.getElementById('next1').disabled = false;
+            });
+        });
+
+        document.querySelectorAll('.dir-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.dir-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                state.direction = btn.dataset.dir;
+                document.getElementById('next2').disabled = false;
+            });
+        });
+
+        document.querySelectorAll('.fortune-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.fortune-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                state.fortune = btn.dataset.fortune;
+                document.getElementById('next3').disabled = false;
+            });
+        });
+
+        // 生成结果
+        function generateResult() {
+            const grid = document.getElementById('resultGrid');
+            grid.innerHTML = '';
+
+            const directions = directionMap[state.direction];
+            const data = fengShuiDB[state.scene][state.fortune];
+
+            const positions = ['behind', 'left', 'front', 'right'];
+
+            positions.forEach(pos => {
+                const dirName = directions[pos];
+                const suggestions = data[pos] || [];
+
+                const div = document.createElement('div');
+                div.className = 'direction-result';
+                div.innerHTML = `
+                    <div class="direction-label">
+                        <span class="icon">${dirIcons[pos]}</span>
+                        <span>${dirLabels[pos]} - ${dirName}</span>
+                    </div>
+                    <ul class="suggestion-list">
+                        ${suggestions.map(s => `
+                            <li class="suggestion-item">
+                                <div class="item-main">
+                                    <span class="item-icon">${s.icon}</span>
+                                    <span class="item-text">${s.item}</span>
+                                </div>
+                                <p class="item-reason">${s.reason}</p>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                grid.appendChild(div);
+            });
+
+            document.getElementById('theoryText').textContent = theoryTexts[state.fortune];
+        }
+
+        // 导航
+        document.getElementById('next1').addEventListener('click', () => updateSteps(2));
+        document.getElementById('back2').addEventListener('click', () => updateSteps(1));
+        document.getElementById('next2').addEventListener('click', () => updateSteps(3));
+        document.getElementById('back3').addEventListener('click', () => updateSteps(2));
+        document.getElementById('next3').addEventListener('click', () => {
+            // 先初始化八字选项
+            initBaziOptions();
+            updateSteps(4);
+        });
+
+        // 八字步骤
+        document.getElementById('skipBazi').addEventListener('click', () => {
+            baziResult = null;
+            generateResult();
+            updateSteps(5);
+        });
+
+        document.getElementById('analyzeBazi').addEventListener('click', () => {
+            analyzeBazi();
+            // 延迟一下再进入结果，让用户看到分析结果
+            setTimeout(() => {
+                generateResult();
+                updateSteps(5);
+            }, 800);
+        });
+
+        // 八字输入验证
+        ['baziYear', 'baziMonth', 'baziDay', 'baziHour'].forEach(id => {
+            document.getElementById(id).addEventListener('change', validateBaziInputs);
+        });
+
+        // 结果页导航
+        document.getElementById('back4').addEventListener('click', () => {
+            baziResult = null;
+            updateSteps(4);
+        });
+        document.getElementById('restart').addEventListener('click', () => {
+            state.scene = null;
+            state.direction = null;
+            state.fortune = null;
+            baziResult = null;
+            document.querySelectorAll('.scene-btn, .dir-btn, .fortune-btn').forEach(el => el.classList.remove('selected'));
+            document.getElementById('next1').disabled = true;
+            document.getElementById('next2').disabled = true;
+            document.getElementById('next3').disabled = true;
+            document.getElementById('minggeResult').classList.add('hidden');
+            updateSteps(1);
+        });
+
+        updateSteps(1);
+    </script>
+</body>
+</html>
