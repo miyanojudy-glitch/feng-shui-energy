@@ -1367,64 +1367,152 @@
             const dayWuxing = rizhuWuxing[baziResult.dayTG];
             const suggestions = [];
 
-            // 喜用神对应的物品映射
+            // 扩展的物品库：根据方位+喜用神+运势
             const wuxingItems = {
-                '木': [
-                    { icon: '🌿', item: '绿萝/吊兰', reason: '喜用神为木，绿植木气生发，助你运势亨通' },
-                    { icon: '🎋', item: '竹制装饰', reason: '喜用神为木，竹子节节高升，利事业发展' },
-                    { icon: '🪵', item: '木质物品', reason: '喜用神为木，木质物品补足木气' },
-                    { icon: '📚', item: '木质书架', reason: '喜用神为木，文昌位配木质书架，利学业事业' }
-                ],
-                '火': [
-                    { icon: '💡', item: '台灯（暖光）', reason: '喜用神为火，暖光灯火生旺，助你事业进步' },
-                    { icon: '🕯️', item: '香薰蜡烛', reason: '喜用神为火，蜡烛主火旺，催动运势提升' },
-                    { icon: '🔴', item: '红色装饰', reason: '喜用神为火，红色属火， activations 运势' },
-                    { icon: '☀️', item: '阳光照片', reason: '喜用神为火，阳光图片引火入宅，利财运' }
-                ],
-                '土': [
-                    { icon: '🏺', item: '陶瓷摆件', reason: '喜用神为土，陶瓷土气厚重，稳固运势' },
-                    { icon: '🪨', item: '玉石', reason: '喜用神为土，玉石土性温和，护身保平安' },
-                    { icon: '🍂', item: '紫砂壶', reason: '喜用神为土，紫砂属土，利健康财运' },
-                    { icon: '🟤', item: '陶土花盆', reason: '喜用神为土，陶土稳固根基' }
-                ],
-                '金': [
-                    { icon: '⚪', item: '金属物品', reason: '喜用神为金，金属物品利事业领导力' },
-                    { icon: '🏅', item: '金属奖杯', reason: '喜用神为金，金属代表权势与成就' },
-                    { icon: '🔔', item: '风铃', reason: '喜用神为金，风铃金属声动宅气' },
-                    { icon: '🪙', item: '金属硬币', reason: '喜用神为金，五帝钱招财进宝' }
-                ],
-                '水': [
-                    { icon: '💧', item: '水培植物', reason: '喜用神为水，水生木旺，财气汇聚' },
-                    { icon: '🌊', item: '流水摆件', reason: '喜用神为水，流水生财，生生不息' },
-                    { icon: '🫙', item: '小鱼缸', reason: '喜用神为水，养鱼催财活宅' },
-                    { icon: '💎', item: '水晶', reason: '喜用神为水，水晶汇聚正能量' }
-                ]
+                // 背后（靠山位）- 属木，主事业靠山
+                behind: {
+                    木: [
+                        { icon: '🌿', item: '大型绿植', reason: '背后靠山位属木，放大叶绿植增强事业靠山' },
+                        { icon: '🏔️', item: '假山盆景', reason: '靠山位配木石，山代表事业有靠山' },
+                        { icon: '📚', item: '木质书柜', reason: '木气生发处，利事业文昌，书籍高置主晋升' },
+                        { icon: '🎋', item: '竹制屏风', reason: '竹子节节高，背后主事业攀升' }
+                    ],
+                    火: [
+                        { icon: '🔥', item: '红色靠垫', reason: '喜用火，背后红色暖光助事业升温' },
+                        { icon: '💡', item: '山景灯', reason: '山+灯光背后明暗交替，利事业前景' },
+                        { icon: '🕯️', item: '落地灯', reason: '灯火明亮背后，主前程似锦' },
+                        { icon: '☀️', item: '阳光照片', reason: '阳光照背后，象征事业光明' }
+                    ],
+                    土: [
+                        { icon: '🏺', item: '陶瓷山水', reason: '喜用土，陶瓷山水稳固背后靠山' },
+                        { icon: '🪨', item: '奇石摆件', reason: '奇石镇后方，主事业稳固' },
+                        { icon: '🧱', item: '砖雕装饰', reason: '砖雕厚重，背后主根基稳固' },
+                        { icon: '🍂', item: '陶渊明画', reason: '陶土艺术品背后，主淡泊名志' }
+                    ],
+                    金: [
+                        { icon: '⚪', item: '金属地图', reason: '喜用金，金属地图背后主版图扩张' },
+                        { icon: '🏅', item: '荣誉奖牌', reason: '奖牌背后象征成就，激励进取' },
+                        { icon: '⚙️', item: '金属齿轮', reason: '齿轮背后象征运转有序' },
+                        { icon: '🗡️', item: '金属剑装饰', reason: '金属利器背后主权威' }
+                    ],
+                    水: [
+                        { icon: '💧', item: '水培大植物', reason: '喜用水，背后放水生植物旺运势' },
+                        { icon: '🌊', item: '小型瀑布画', reason: '流水背后主财源滚滚' },
+                        { icon: '🧊', item: '冰蓝灯', reason: '蓝冰色灯光背后主冷静决策' },
+                        { icon: '🐢', item: '龟甲装饰', reason: '龟甲背后主长寿稳健' }
+                    ]
+                },
+                // 左边（青龙位）- 属水，主进气贵气
+                left: {
+                    木: [
+                        { icon: '🌿', item: ' tall绿植', reason: '左边青龙位木气生发，高大绿植吸纳贵气' },
+                        { icon: '🎋', item: '竹笛', reason: '竹制乐器左边主文雅贵气' },
+                        { icon: '📖', item: '论语/道德经', reason: '木性书籍左边主文化贵气' },
+                        { icon: '🪵', item: '木雕装饰', reason: '木雕精细左边主工艺贵气' }
+                    ],
+                    火: [
+                        { icon: '🕯️', item: '香薰炉', reason: '喜用火，左侧香薰生旺，贵人降临' },
+                        { icon: '🔴', item: '红色中国结', reason: '红结左边主吉祥贵气' },
+                        { icon: '🔥', item: '暖手宝', reason: '温暖物品左边主社交人气' },
+                        { icon: '💡', item: '复古煤油灯', reason: '油灯左边主怀旧贵气' }
+                    ],
+                    土: [
+                        { icon: '🏺', item: '紫砂花盆', reason: '喜用土，左侧放紫砂盆养木旺贵' },
+                        { icon: '🪨', item: '泰山石', reason: '泰山石左边镇宅招贵' },
+                        { icon: '🧱', item: '古砖托盘', reason: '古砖左边承托贵重物品' },
+                        { icon: '🍂', item: '枯木艺术', reason: '枯木左边主沧桑贵气' }
+                    ],
+                    金: [
+                        { icon: '⚪', item: '金属风铃', reason: '喜用金，左边风铃引贵气进门' },
+                        { icon: '🏅', item: '铜钱剑', reason: '铜钱左边主财富贵气' },
+                        { icon: '🔔', item: '铜铃', reason: '铜铃左边摇动招贵' },
+                        { icon: '🪙', item: '五帝钱', reason: '五帝钱左边旺财招贵' }
+                    ],
+                    水: [
+                        { icon: '💧', item: '流水喷泉', reason: '喜用水，左边流水主财气汇聚' },
+                        { icon: '🐠', item: '小型鱼缸', reason: '鱼缸左边主活性贵气' },
+                        { icon: '💎', item: '水晶柱', reason: '水晶左边聚贵气正能量' },
+                        { icon: '🌊', item: '海浪画', reason: '海浪画左边主胸襟贵气' }
+                    ]
+                },
+                // 前面（明堂位）- 属金，主财气进气
+                front: {
+                    木: [
+                        { icon: '🌱', item: '文竹', reason: '喜用木，前方文竹主学业文昌' },
+                        { icon: '🎋', item: '竹帘', reason: '竹帘前方透光主清新进气' },
+                        { icon: '📚', item: '横版书架', reason: '书籍横放前方主横财' },
+                        { icon: '🪵', item: '木相框', reason: '木框照片前方展示贵相' }
+                    ],
+                    火: [
+                        { icon: '💡', item: '明亮台灯', reason: '喜用火，前方明亮主财气进门' },
+                        { icon: '🕯️', item: '蜡烛灯', reason: '烛光前方主温暖进气' },
+                        { icon: '🔴', item: '红色地毯', reason: '红毯前方主喜庆纳财' },
+                        { icon: '☀️', item: '太阳镜', reason: '阳光反射前方主光明进气' }
+                    ],
+                    土: [
+                        { icon: '🏺', item: '陶瓷聚宝盆', reason: '喜用土，前方聚宝盆主守财' },
+                        { icon: '🪨', item: '黄蜡石', reason: '黄蜡石前方主土旺财' },
+                        { icon: '🧱', item: '红砖', reason: '红砖前方主砖砂进气' },
+                        { icon: '🍂', item: '陶罐', reason: '陶罐前方主储藏进气' }
+                    ],
+                    金: [
+                        { icon: '⚪', item: '金属保险箱', reason: '喜用金，前方保险箱主守财' },
+                        { icon: '🏅', item: '金属奖杯', reason: '奖杯前方展示主成就进气' },
+                        { icon: '⚙️', item: '金属雕塑', reason: '金属艺术品前方主精致进气' },
+                        { icon: '🪙', item: '金元宝', reason: '金元宝前方主直接旺财' }
+                    ],
+                    水: [
+                        { icon: '💧', item: '水培植物', reason: '喜用水，前方水生植物主生财' },
+                        { icon: '🌊', item: '流水摆件', reason: '流水前方主活财流动' },
+                        { icon: '🐟', item: '小型鱼缸', reason: '鱼缸前方主年年有余' },
+                        { icon: '💎', item: '黑曜石', reason: '黑曜石前方主辟邪进气' }
+                    ]
+                },
+                // 右边（白虎位）- 属土，主衡压权威
+                right: {
+                    木: [
+                        { icon: '🌿', item: '虎皮兰', reason: '右边白虎位配虎皮兰以木制木' },
+                        { icon: '🎋', item: '竹梯', reason: '竹梯右边主步步高升' },
+                        { icon: '📦', item: '木质收纳盒', reason: '木盒右边主收纳有序' },
+                        { icon: '🪵', item: '木雕动物', reason: '木雕右边主温和制虎' }
+                    ],
+                    火: [
+                        { icon: '🔴', item: '红色床旗', reason: '喜用火，右边红色以火制金虎' },
+                        { icon: '🔥', item: '壁炉装饰', reason: '壁炉右边主温暖制肃杀' },
+                        { icon: '🕯️', item: '蜡烛台', reason: '烛台右边主温馨制威' },
+                        { icon: '💡', item: '小夜灯', reason: '夜灯右边主柔和制刚' }
+                    ],
+                    土: [
+                        { icon: '🏺', item: '陶瓷老虎', reason: '喜用土，陶瓷老虎右边以土制金' },
+                        { icon: '🪨', item: '黄蜡石', reason: '黄蜡右边主土性平衡' },
+                        { icon: '🧱', item: '红砖', reason: '红砖右边主稳固制白虎' },
+                        { icon: '🍂', item: '陶土马', reason: '陶马右边主忠诚制虎' }
+                    ],
+                    金: [
+                        { icon: '⚪', item: '金属白虎', reason: '喜用金，金属白虎右边以金制金' },
+                        { icon: '⚙️', item: '金属权杖', reason: '权杖右边主权威制衡' },
+                        { icon: '🗡️', item: '金属剑', reason: '利剑右边以刚制刚' },
+                        { icon: '🔔', item: '铜钟', reason: '铜钟右边主声威制衡' }
+                    ],
+                    水: [
+                        { icon: '💧', item: '小型水托盘', reason: '喜用水，水托右边以水制金' },
+                        { icon: '🌊', item: '流水小盆', reason: '流水右边主柔和制刚' },
+                        { icon: '🐢', item: '石龟', reason: '石龟右边主稳重制衡' },
+                        { icon: '💎', item: '蓝水晶', reason: '蓝水晶右边主宁静制威' }
+                    ]
+                }
             };
 
-            const posName = {
-                'behind': '背后靠山位',
-                'left': '左边青龙位',
-                'front': '前面明堂位',
-                'right': '右边白虎位'
-            };
+            // 获取当前喜用神对应的物品库
+            const posItems = wuxingItems[pos];
+            if (!posItems) return [];
 
-            // 添加喜用神对应的物品（每个喜用神一个）
+            const suggestions = [];
             xiyongArr.forEach((xy, i) => {
-                const items = wuxingItems[xy] || [];
+                const items = posItems[xy] || [];
                 if (items.length > 0) {
-                    const item = items[0];
+                    const item = items[i % items.length];
                     let reason = item.reason;
-
-                    // 根据方位调整原因
-                    if (pos === 'behind') {
-                        reason = `位于${posName[pos]}，${reason.replace('，', '，背后有靠山则')}`;
-                    } else if (pos === 'left') {
-                        reason = `位于${posName[pos]}，${reason.replace('，', '，青龙位主进气则')}`;
-                    } else if (pos === 'front') {
-                        reason = `位于${posName[pos]}，${reason.replace('，', '，明堂开阔则')}`;
-                    } else {
-                        reason = `位于${posName[pos]}，${reason.replace('，', '，白虎位平衡则')}`;
-                    }
 
                     if (i === 0) {
                         reason += '（喜用神首选，最适合你）';
@@ -1434,13 +1522,13 @@
                 }
             });
 
-            // 如果喜用神不足2个，用第二个喜用神的物品补充
-            if (xiyongArr.length > 1 && suggestions.length < 2) {
-                const secondXY = xiyongArr[1];
-                const items = wuxingItems[secondXY] || [];
+            // 如果喜用神只有一个，补充一个默认的
+            if (suggestions.length < 2 && xiyongArr.length > 0) {
+                const defaultXY = xiyongArr[0];
+                const otherXY = ['木', '火', '土', '金', '水'].find(w => w !== defaultXY);
+                const items = posItems[otherXY] || [];
                 if (items.length > 1) {
-                    const item = items[1];
-                    suggestions.push({ icon: item.icon, item: item.item, reason: `喜用神为${secondXY}，${item.reason}` });
+                    suggestions.push({ icon: items[1].icon, item: items[1].item, reason: items[1].reason + '（辅助）' });
                 }
             }
 
