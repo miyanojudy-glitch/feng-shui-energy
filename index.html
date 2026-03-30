@@ -1367,19 +1367,36 @@
 
             // 喜用神对应的物品映射
             const wuxingItems = {
-                '木': ['🌿 绿萝/吊兰', '🌱 小型盆栽', '🎋 竹制物品', '📚 木质书架', '🪵 木雕'],
-                '火': ['💡 台灯（暖光）', '🕯️ 香薰蜡烛', '🔥 红色装饰', '☀️ 阳光照片', '🔴 红布'],
-                '土': ['🏺 陶瓷摆件', '🪨 玉石', '🧱 砖块装饰', '🍂 紫砂壶', '🟤 陶土花盆'],
-                '金': ['⚪ 金属物品', '🏅 金属奖杯', '⚙️ 金属书签', '🔔 风铃', '🪙 金属硬币'],
-                '水': ['💧 水培植物', '🌊 流水摆件', '🫙 小鱼缸', '💎 水晶', '🧊 蓝色装饰']
-            };
-
-            // 根据方位和喜用神生成建议
-            const posWuxing = {
-                'behind': '木',    // 靠山位属木
-                'left': '水',      // 青龙位属水
-                'front': '金',     // 明堂位属金
-                'right': '土'      // 白虎位属土
+                '木': [
+                    { icon: '🌿', item: '绿萝/吊兰', reason: '喜用神为木，绿植木气生发，助你运势亨通' },
+                    { icon: '🎋', item: '竹制装饰', reason: '喜用神为木，竹子节节高升，利事业发展' },
+                    { icon: '🪵', item: '木质物品', reason: '喜用神为木，木质物品补足木气' },
+                    { icon: '📚', item: '木质书架', reason: '喜用神为木，文昌位配木质书架，利学业事业' }
+                ],
+                '火': [
+                    { icon: '💡', item: '台灯（暖光）', reason: '喜用神为火，暖光灯火生旺，助你事业进步' },
+                    { icon: '🕯️', item: '香薰蜡烛', reason: '喜用神为火，蜡烛主火旺，催动运势提升' },
+                    { icon: '🔴', item: '红色装饰', reason: '喜用神为火，红色属火， activations 运势' },
+                    { icon: '☀️', item: '阳光照片', reason: '喜用神为火，阳光图片引火入宅，利财运' }
+                ],
+                '土': [
+                    { icon: '🏺', item: '陶瓷摆件', reason: '喜用神为土，陶瓷土气厚重，稳固运势' },
+                    { icon: '🪨', item: '玉石', reason: '喜用神为土，玉石土性温和，护身保平安' },
+                    { icon: '🍂', item: '紫砂壶', reason: '喜用神为土，紫砂属土，利健康财运' },
+                    { icon: '🟤', item: '陶土花盆', reason: '喜用神为土，陶土稳固根基' }
+                ],
+                '金': [
+                    { icon: '⚪', item: '金属物品', reason: '喜用神为金，金属物品利事业领导力' },
+                    { icon: '🏅', item: '金属奖杯', reason: '喜用神为金，金属代表权势与成就' },
+                    { icon: '🔔', item: '风铃', reason: '喜用神为金，风铃金属声动宅气' },
+                    { icon: '🪙', item: '金属硬币', reason: '喜用神为金，五帝钱招财进宝' }
+                ],
+                '水': [
+                    { icon: '💧', item: '水培植物', reason: '喜用神为水，水生木旺，财气汇聚' },
+                    { icon: '🌊', item: '流水摆件', reason: '喜用神为水，流水生财，生生不息' },
+                    { icon: '🫙', item: '小鱼缸', reason: '喜用神为水，养鱼催财活宅' },
+                    { icon: '💎', item: '水晶', reason: '喜用神为水，水晶汇聚正能量' }
+                ]
             };
 
             const posName = {
@@ -1389,36 +1406,41 @@
                 'right': '右边白虎位'
             };
 
-            // 添加喜用神对应的物品
+            // 添加喜用神对应的物品（每个喜用神一个）
             xiyongArr.forEach((xy, i) => {
                 const items = wuxingItems[xy] || [];
                 if (items.length > 0) {
-                    const item = items[i % items.length];
-                    const icon = item.split(' ')[0];
-                    const name = item.split(' ')[1];
+                    const item = items[0];
+                    let reason = item.reason;
 
-                    let reason = '';
+                    // 根据方位调整原因
                     if (pos === 'behind') {
-                        reason = `${posName[pos]}主靠山，摆放${name}助你事业有靠山、贵人相助`;
+                        reason = `位于${posName[pos]}，${reason.replace('，', '，背后有靠山则')}`;
                     } else if (pos === 'left') {
-                        reason = `${posName[pos]}主木气生发，摆放${name}利财气汇聚、贵人降临`;
+                        reason = `位于${posName[pos]}，${reason.replace('，', '，青龙位主进气则')}`;
                     } else if (pos === 'front') {
-                        reason = `${posName[pos]}主进气口，摆放${name}纳财进气、事业发展`;
+                        reason = `位于${posName[pos]}，${reason.replace('，', '，明堂开阔则')}`;
                     } else {
-                        reason = `${posName[pos]}主权衡，摆放${name}稳固运势、提升领导力`;
+                        reason = `位于${posName[pos]}，${reason.replace('，', '，白虎位平衡则')}`;
                     }
 
                     if (i === 0) {
-                        reason += '（喜用神首选，效果最佳）';
+                        reason += '（喜用神首选，最适合你）';
                     }
 
-                    suggestions.push({ icon, item: name, reason });
+                    suggestions.push({ icon: item.icon, item: item.item, reason });
                 }
             });
 
-            // 添加根据运势的特定建议
-            const fortuneItems = getFortuneSpecificItems(fortune, pos, dayWuxing);
-            suggestions.push(...fortuneItems);
+            // 如果喜用神不足2个，用第二个喜用神的物品补充
+            if (xiyongArr.length > 1 && suggestions.length < 2) {
+                const secondXY = xiyongArr[1];
+                const items = wuxingItems[secondXY] || [];
+                if (items.length > 1) {
+                    const item = items[1];
+                    suggestions.push({ icon: item.icon, item: item.item, reason: `喜用神为${secondXY}，${item.reason}` });
+                }
+            }
 
             return suggestions;
         }
