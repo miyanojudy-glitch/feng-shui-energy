@@ -1562,45 +1562,6 @@
             });
         });
 
-        // 生成结果
-        function generateResult() {
-            const grid = document.getElementById('resultGrid');
-            grid.innerHTML = '';
-
-            const directions = directionMap[state.direction];
-            const data = fengShuiDB[state.scene][state.fortune];
-
-            const positions = ['behind', 'left', 'front', 'right'];
-
-            positions.forEach(pos => {
-                const dirName = directions[pos];
-                const suggestions = data[pos] || [];
-
-                const div = document.createElement('div');
-                div.className = 'direction-result';
-                div.innerHTML = `
-                    <div class="direction-label">
-                        <span class="icon">${dirIcons[pos]}</span>
-                        <span>${dirLabels[pos]} - ${dirName}</span>
-                    </div>
-                    <ul class="suggestion-list">
-                        ${suggestions.map(s => `
-                            <li class="suggestion-item">
-                                <div class="item-main">
-                                    <span class="item-icon">${s.icon}</span>
-                                    <span class="item-text">${s.item}</span>
-                                </div>
-                                <p class="item-reason">${s.reason}</p>
-                            </li>
-                        `).join('')}
-                    </ul>
-                `;
-                grid.appendChild(div);
-            });
-
-            document.getElementById('theoryText').textContent = theoryTexts[state.fortune];
-        }
-
         // 导航
         document.getElementById('next1').addEventListener('click', () => updateSteps(2));
         document.getElementById('back2').addEventListener('click', () => updateSteps(1));
