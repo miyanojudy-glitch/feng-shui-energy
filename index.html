@@ -1271,6 +1271,7 @@
 
         // 生成结果（包含个性化建议）
         function generateResult() {
+            console.log('generateResult called, baziResult:', baziResult);
             const grid = document.getElementById('resultGrid');
             grid.innerHTML = '';
 
@@ -1279,6 +1280,7 @@
 
             // 如果有八字结果，生成完全个性化的建议
             if (baziResult) {
+                console.log('Using personalized suggestions for:', baziResult.xiyongshen);
                 const xiyongArr = baziResult.xiyongshen.split('/');
                 const dayWuxing = rizhuWuxing[baziResult.dayTG];
 
@@ -1575,13 +1577,16 @@
 
         // 八字步骤
         document.getElementById('skipBazi').addEventListener('click', () => {
+            console.log('Skip bazi clicked');
             baziResult = null;
             generateResult();
             updateSteps(5);
         });
 
         document.getElementById('analyzeBazi').addEventListener('click', () => {
+            console.log('Analyze bazi clicked');
             analyzeBazi();
+            console.log('After analyzeBazi, baziResult:', baziResult);
             // 延迟一下再进入结果，让用户看到分析结果
             setTimeout(() => {
                 generateResult();
