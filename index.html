@@ -1277,9 +1277,10 @@
             const directions = directionMap[state.direction];
             let data = fengShuiDB[state.scene][state.fortune];
 
-            // 如果有八字结果，个性化调整
+            // 如果有八字结果，生成完全个性化的建议
             if (baziResult) {
                 const xiyongArr = baziResult.xiyongshen.split('/');
+                const dayWuxing = rizhuWuxing[baziResult.dayTG];
 
                 // 在结果顶部显示命格信息
                 const minggeInfo = document.createElement('div');
@@ -1289,17 +1290,25 @@
                     <div class="mingge-grid">
                         <div class="mingge-item">
                             <div class="mingge-item-label">日主</div>
-                            <div class="mingge-item-value">${baziResult.dayTG}（${rizhuWuxing[baziResult.dayTG]}）</div>
+                            <div class="mingge-item-value">${baziResult.dayTG}（${dayWuxing}）</div>
                         </div>
                         <div class="mingge-item">
                             <div class="mingge-item-label">命格</div>
                             <div class="mingge-item-value">${baziResult.mingge}</div>
                         </div>
+                        <div class="mingge-item">
+                            <div class="mingge-item-label">五行强弱</div>
+                            <div class="mingge-item-value">${baziResult.strength.desc}</div>
+                        </div>
+                        <div class="mingge-item">
+                            <div class="mingge-item-label">用神</div>
+                            <div class="mingge-item-value">${xiyongArr[0]}</div>
+                        </div>
                     </div>
                     <div class="xingyongshen">
-                        <div class="xingyongshen-title">你的喜用神: ${baziResult.xiyongshen}</div>
+                        <div class="xingyongshen-title">喜用神: ${baziResult.xiyongshen}</div>
                         <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
-                            建议多使用${xiyongArr.map(w => w + '属性').join('、')}的物品来增强运势
+                            你的${dayWuxing}日主${baziResult.strength.desc}，喜用${xiyongArr.join('、')}，多使用这些五行属性的物品效果最佳
                         </p>
                     </div>
                 `;
@@ -1310,29 +1319,14 @@
 
             positions.forEach(pos => {
                 const dirName = directions[pos];
-                let suggestions = data[pos] || [];
+                let suggestions = [];
 
-                // 如果有八字结果，个性化调整建议
+                // 如果有八字结果，生成完全定制化的建议
                 if (baziResult) {
-                    const xiyongArr = baziResult.xiyongshen.split('/');
-                    const rzWuxing = rizhuWuxing[baziResult.dayTG];
-
-                    // 调整建议顺序：喜用神相关的放前面
-                    suggestions = suggestions.map(s => {
-                        let priority = 0;
-                        const itemLower = s.item.toLowerCase();
-                        xiyongArr.forEach((xy, i) => {
-                            if (xy === '木' && (itemLower.includes('绿') || itemLower.includes('植') || itemLower.includes('木'))) priority += (3 - i);
-                            if (xy === '火' && (itemLower.includes('灯') || itemLower.includes('蜡') || itemLower.includes('火'))) priority += (3 - i);
-                            if (xy === '土' && (itemLower.includes('陶') || itemLower.includes('瓷') || itemLower.includes('土'))) priority += (3 - i);
-                            if (xy === '金' && (itemLower.includes('金') || itemLower.includes('属'))) priority += (3 - i);
-                            if (xy === '水' && (itemLower.includes('水') || itemLower.includes('玉'))) priority += (3 - i);
-                        });
-                        return { ...s, priority };
-                    });
-
-                    // 按优先级排序
-                    suggestions.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+                    suggestions = generatePersonalizedSuggestions(pos, dirName, state.fortune, baziResult);
+                } else {
+                    // 使用默认建议
+                    suggestions = data[pos] || [];
                 }
 
                 const div = document.createElement('div');
@@ -1360,9 +1354,142 @@
             // 原理说明
             let theoryText = theoryTexts[state.fortune];
             if (baziResult) {
-                theoryText += '\n\n【个性化提示】你的喜用神为' + baziResult.xiyongshen + '，在选择物品时，优先选择对应五行的物品效果更佳。';
+                theoryText += '\n\n【个性化提示】你的喜用神为' + baziResult.xiyongshen + '，' + getPersonalizedTip(baziResult);
             }
             document.getElementById('theoryText').textContent = theoryText;
+        }
+
+        // 根据八字生成个性化建议
+        function generatePersonalizedSuggestions(pos, dirName, fortune, bazi) {
+            const xiyongArr = baziResult.xiyongshen.split('/');
+            const dayWuxing = rizhuWuxing[baziResult.dayTG];
+            const suggestions = [];
+
+            // 喜用神对应的物品映射
+            const wuxingItems = {
+                '木': ['🌿 绿萝/吊兰', '🌱 小型盆栽', '🎋 竹制物品', '📚 木质书架', '🪵 木雕'],
+                '火': ['💡 台灯（暖光）', '🕯️ 香薰蜡烛', '🔥 红色装饰', '☀️ 阳光照片', '🔴 红布'],
+                '土': ['🏺 陶瓷摆件', '🪨 玉石', '🧱 砖块装饰', '🍂 紫砂壶', '🟤 陶土花盆'],
+                '金': ['⚪ 金属物品', '🏅 金属奖杯', '⚙️ 金属书签', '🔔 风铃', '🪙 金属硬币'],
+                '水': ['💧 水培植物', '🌊 流水摆件', '🫙 小鱼缸', '💎 水晶', '🧊 蓝色装饰']
+            };
+
+            // 根据方位和喜用神生成建议
+            const posWuxing = {
+                'behind': '木',    // 靠山位属木
+                'left': '水',      // 青龙位属水
+                'front': '金',     // 明堂位属金
+                'right': '土'      // 白虎位属土
+            };
+
+            const posName = {
+                'behind': '背后靠山位',
+                'left': '左边青龙位',
+                'front': '前面明堂位',
+                'right': '右边白虎位'
+            };
+
+            // 添加喜用神对应的物品
+            xiyongArr.forEach((xy, i) => {
+                const items = wuxingItems[xy] || [];
+                if (items.length > 0) {
+                    const item = items[i % items.length];
+                    const icon = item.split(' ')[0];
+                    const name = item.split(' ')[1];
+
+                    let reason = '';
+                    if (pos === 'behind') {
+                        reason = `${posName[pos]}主靠山，摆放${name}助你事业有靠山、贵人相助`;
+                    } else if (pos === 'left') {
+                        reason = `${posName[pos]}主木气生发，摆放${name}利财气汇聚、贵人降临`;
+                    } else if (pos === 'front') {
+                        reason = `${posName[pos]}主进气口，摆放${name}纳财进气、事业发展`;
+                    } else {
+                        reason = `${posName[pos]}主权衡，摆放${name}稳固运势、提升领导力`;
+                    }
+
+                    if (i === 0) {
+                        reason += '（喜用神首选，效果最佳）';
+                    }
+
+                    suggestions.push({ icon, item: name, reason });
+                }
+            });
+
+            // 添加根据运势的特定建议
+            const fortuneItems = getFortuneSpecificItems(fortune, pos, dayWuxing);
+            suggestions.push(...fortuneItems);
+
+            return suggestions;
+        }
+
+        // 根据运势获取特定建议
+        function getFortuneSpecificItems(fortune, pos, dayWuxing) {
+            const items = {
+                wealth: {
+                    behind: [{ icon: '🏔️', item: '山景画/假山', reason: '背后有靠山，主财库稳固、收入稳定' }],
+                    left: [{ icon: '💰', item: '聚宝盆/存钱罐', reason: '左边青龙位主进气，放聚宝盆吸纳财气' }],
+                    front: [{ icon: '📺', item: '电视墙/明亮背景', reason: '前方明堂主财位，明亮则财气亨通' }],
+                    right: [{ icon: '🐯', item: '金属装饰/保险箱', reason: '右边白虎位主库，金属物品加固财库' }]
+                },
+                career: {
+                    behind: [{ icon: '🏔️', item: '山景画/高书柜', reason: '靠山位主事业支撑，有靠山则晋升有望' }],
+                    left: [{ icon: '📊', item: '业绩图表/荣誉证书', reason: '左边主贵人与机遇，展示成就利发展' }],
+                    front: [{ icon: '💼', item: '工作文件/计划板', reason: '前方明堂主前程，整洁有序利事业推进' }],
+                    right: [{ icon: '⚖️', item: '金属座钟/权杖', reason: '右边主执行力与权威，金属物品提升领导力' }]
+                },
+                love: {
+                    behind: [{ icon: '💑', item: '双人照/婚纱照', reason: '背后主感情靠山稳固，双人照增强归属感' }],
+                    left: [{ icon: '🌸', item: '鲜花/干花', reason: '左边木气生发处，花卉招引优质缘分' }],
+                    front: [{ icon: '🕯️', item: '香薰蜡烛/氛围灯', reason: '前方离卦主桃花，温暖灯光营造浪漫氛围' }],
+                    right: [{ icon: '💍', item: '成对物品/对杯', reason: '右边白虎位放成对物品，象征感情稳定长久' }]
+                },
+                study: {
+                    behind: [{ icon: '📚', item: '书架（高过视线）', reason: '背后文昌位，书籍高置主学业进步、智慧提升' }],
+                    left: [{ icon: '🖊️', item: '文具/草稿纸', reason: '左边木气生发处，利思考与记忆' }],
+                    front: [{ icon: '💡', item: '台灯（白光）', reason: '前方坎卦主智慧，充足白光利于专注学习' }],
+                    right: [{ icon: '📖', item: '当前学习资料', reason: '右边随手可取，放当前使用资料提升效率' }]
+                },
+                health: {
+                    behind: [{ icon: '🌿', item: '阔叶植物（如虎皮兰）', reason: '背后东/东北木气，主肝胆免疫系统' }],
+                    left: [{ icon: '🧘', item: '小型静心物品', reason: '左边水木相生，静心物品平衡身心健康' }],
+                    front: [{ icon: '🌙', item: '柔和夜灯', reason: '前方属火宜静，柔和灯光不影响睡眠' }],
+                    right: [{ icon: '🏺', item: '陶瓷物品', reason: '右边土金位，陶瓷稳固消化系统' }]
+                }
+            };
+
+            return items[fortune][pos] || [];
+        }
+
+        // 获取个性化提示
+        function getPersonalizedTip(bazi) {
+            const tips = [];
+            const dayWuxing = rizhuWuxing[bazi.dayTG];
+            const xiyong = baziResult.xiyongshen.split('/');
+
+            if (bazi.strength.strength === '弱') {
+                tips.push('日主偏弱，建议多用生助日主' + dayWuxing + '的物品');
+            } else if (bazi.strength.strength === '强') {
+                tips.push('日主偏旺，可用泄秀物品平衡');
+            }
+
+            if (xiyong.includes('木')) {
+                tips.push('喜用木，建议多接触绿色植物和木质物品');
+            }
+            if (xiyong.includes('火')) {
+                tips.push('喜用火，灯光、红色物品对你很有帮助');
+            }
+            if (xiyong.includes('土')) {
+                tips.push('喜用土，陶瓷、紫砂器皿适合你');
+            }
+            if (xiyong.includes('金')) {
+                tips.push('喜用金，金属物品可助你事业发展');
+            }
+            if (xiyong.includes('水')) {
+                tips.push('喜用水，水培植物、鱼缸对你很有利');
+            }
+
+            return tips.join('；') + '。';
         }
 
         // 状态
