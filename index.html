@@ -1361,175 +1361,179 @@
             document.getElementById('theoryText').textContent = theoryText;
         }
 
-        // 根据八字生成个性化建议
+        // 根据八字生成个性化建议（方位+喜用神+运势三维定制）
         function generatePersonalizedSuggestions(pos, dirName, fortune, bazi) {
             const xiyongArr = baziResult.xiyongshen.split('/');
-            const dayWuxing = rizhuWuxing[baziResult.dayTG];
             const suggestions = [];
 
-            // 扩展的物品库：根据方位+喜用神+运势
-            const wuxingItems = {
-                // 背后（靠山位）- 属木，主事业靠山
+            // 三维物品库：方位 × 喜用神 × 运势
+            const fullItems = {
                 behind: {
-                    木: [
-                        { icon: '🌿', item: '大型绿植', reason: '背后靠山位属木，放大叶绿植增强事业靠山' },
-                        { icon: '🏔️', item: '假山盆景', reason: '靠山位配木石，山代表事业有靠山' },
-                        { icon: '📚', item: '木质书柜', reason: '木气生发处，利事业文昌，书籍高置主晋升' },
-                        { icon: '🎋', item: '竹制屏风', reason: '竹子节节高，背后主事业攀升' }
-                    ],
-                    火: [
-                        { icon: '🔥', item: '红色靠垫', reason: '喜用火，背后红色暖光助事业升温' },
-                        { icon: '💡', item: '山景灯', reason: '山+灯光背后明暗交替，利事业前景' },
-                        { icon: '🕯️', item: '落地灯', reason: '灯火明亮背后，主前程似锦' },
-                        { icon: '☀️', item: '阳光照片', reason: '阳光照背后，象征事业光明' }
-                    ],
-                    土: [
-                        { icon: '🏺', item: '陶瓷山水', reason: '喜用土，陶瓷山水稳固背后靠山' },
-                        { icon: '🪨', item: '奇石摆件', reason: '奇石镇后方，主事业稳固' },
-                        { icon: '🧱', item: '砖雕装饰', reason: '砖雕厚重，背后主根基稳固' },
-                        { icon: '🍂', item: '陶渊明画', reason: '陶土艺术品背后，主淡泊名志' }
-                    ],
-                    金: [
-                        { icon: '⚪', item: '金属地图', reason: '喜用金，金属地图背后主版图扩张' },
-                        { icon: '🏅', item: '荣誉奖牌', reason: '奖牌背后象征成就，激励进取' },
-                        { icon: '⚙️', item: '金属齿轮', reason: '齿轮背后象征运转有序' },
-                        { icon: '🗡️', item: '金属剑装饰', reason: '金属利器背后主权威' }
-                    ],
-                    水: [
-                        { icon: '💧', item: '水培大植物', reason: '喜用水，背后放水生植物旺运势' },
-                        { icon: '🌊', item: '小型瀑布画', reason: '流水背后主财源滚滚' },
-                        { icon: '🧊', item: '冰蓝灯', reason: '蓝冰色灯光背后主冷静决策' },
-                        { icon: '🐢', item: '龟甲装饰', reason: '龟甲背后主长寿稳健' }
-                    ]
+                    wealth: {
+                        木: [{ icon: '🌿', item: '大型绿植', reason: '喜用木，背靠木气生财，大叶植物主财库稳固' }],
+                        火: [{ icon: '💡', item: '财神灯', reason: '喜用火，财神灯照背后，主财神降临' }],
+                        土: [{ icon: '🏺', item: '陶瓷聚宝盆', reason: '喜用土，陶瓷聚宝盆背后主守财' }],
+                        金: [{ icon: '⚪', item: '金属保险箱', reason: '喜用金，保险箱背后主财富安全' }],
+                        水: [{ icon: '💧', item: '水培大植物', reason: '喜用水，水生木旺，背靠主生财' }]
+                    },
+                    career: {
+                        木: [{ icon: '🌿', item: '大型绿植', reason: '喜用木，背靠木气主事业靠山' }],
+                        火: [{ icon: '🔥', item: '红色靠垫', reason: '喜用火，红色背后主事业升温' }],
+                        土: [{ icon: '🏺', item: '陶瓷山水', reason: '喜用土，山水背后主靠山稳固' }],
+                        金: [{ icon: '🏅', item: '荣誉奖牌', reason: '喜用金，奖牌背后象征成就' }],
+                        水: [{ icon: '🌊', item: '瀑布画', reason: '喜用水，瀑布背后主财源' }]
+                    },
+                    love: {
+                        木: [{ icon: '🌸', item: '粉色纱帘', reason: '喜用木，木气生发处配粉色，主桃花靠山' }],
+                        火: [{ icon: '🔴', item: '红色床旗', reason: '喜用火，红色背后主感情热烈' }],
+                        土: [{ icon: '💑', item: '陶瓷双人像', reason: '喜用土，双人陶瓷背后主稳定' }],
+                        金: [{ icon: '💍', item: '金属相框', reason: '喜用金，金属框合照背后主稳固' }],
+                        water: [{ icon: '🌙', item: '月光灯', reason: '喜用水，柔和夜灯背后主浪漫' }]
+                    },
+                    study: {
+                        木: [{ icon: '📚', item: '木质书架', reason: '喜用木，木性书籍背后主学业' }],
+                        火: [{ icon: '💡', item: '护眼台灯', reason: '喜用火，灯光背后主智慧' }],
+                        土: [{ icon: '🏺', item: '陶瓷笔筒', reason: '喜用土，陶瓷文具背后主学业稳固' }],
+                        金: [{ icon: '⚙️', item: '金属书签', reason: '喜用金，金属书签背后主专注' }],
+                        水: [{ icon: '🌊', item: '海景画', reason: '喜用水，海阔天空背后主胸怀' }]
+                    },
+                    health: {
+                        木: [{ icon: '🌿', item: '虎皮兰', reason: '喜用木，绿植背后主肝胆健康' }],
+                        火: [{ icon: '🕯️', item: '薰衣草蜡烛', reason: '喜用火，香薰背后主睡眠' }],
+                        土: [{ icon: '🪨', item: '玉石', reason: '喜用土，玉石背后主健康' }],
+                        金: [{ icon: '⚪', item: '银手镯', reason: '喜用金，银饰背后主健康' }],
+                        水: [{ icon: '💧', item: '水培植物', reason: '喜用水，水生植物背后主循环' }]
+                    }
                 },
-                // 左边（青龙位）- 属水，主进气贵气
                 left: {
-                    木: [
-                        { icon: '🌿', item: ' tall绿植', reason: '左边青龙位木气生发，高大绿植吸纳贵气' },
-                        { icon: '🎋', item: '竹笛', reason: '竹制乐器左边主文雅贵气' },
-                        { icon: '📖', item: '论语/道德经', reason: '木性书籍左边主文化贵气' },
-                        { icon: '🪵', item: '木雕装饰', reason: '木雕精细左边主工艺贵气' }
-                    ],
-                    火: [
-                        { icon: '🕯️', item: '香薰炉', reason: '喜用火，左侧香薰生旺，贵人降临' },
-                        { icon: '🔴', item: '红色中国结', reason: '红结左边主吉祥贵气' },
-                        { icon: '🔥', item: '暖手宝', reason: '温暖物品左边主社交人气' },
-                        { icon: '💡', item: '复古煤油灯', reason: '油灯左边主怀旧贵气' }
-                    ],
-                    土: [
-                        { icon: '🏺', item: '紫砂花盆', reason: '喜用土，左侧放紫砂盆养木旺贵' },
-                        { icon: '🪨', item: '泰山石', reason: '泰山石左边镇宅招贵' },
-                        { icon: '🧱', item: '古砖托盘', reason: '古砖左边承托贵重物品' },
-                        { icon: '🍂', item: '枯木艺术', reason: '枯木左边主沧桑贵气' }
-                    ],
-                    金: [
-                        { icon: '⚪', item: '金属风铃', reason: '喜用金，左边风铃引贵气进门' },
-                        { icon: '🏅', item: '铜钱剑', reason: '铜钱左边主财富贵气' },
-                        { icon: '🔔', item: '铜铃', reason: '铜铃左边摇动招贵' },
-                        { icon: '🪙', item: '五帝钱', reason: '五帝钱左边旺财招贵' }
-                    ],
-                    水: [
-                        { icon: '💧', item: '流水喷泉', reason: '喜用水，左边流水主财气汇聚' },
-                        { icon: '🐠', item: '小型鱼缸', reason: '鱼缸左边主活性贵气' },
-                        { icon: '💎', item: '水晶柱', reason: '水晶左边聚贵气正能量' },
-                        { icon: '🌊', item: '海浪画', reason: '海浪画左边主胸襟贵气' }
-                    ]
+                    wealth: {
+                        木: [{ icon: '🌿', item: '高大绿植', reason: '喜用木，左青龙位木气生发主进财' }],
+                        火: [{ icon: '🕯️', item: '招财蜡烛', reason: '喜用火，左侧蜡烛主生财' }],
+                        土: [{ icon: '🧱', item: '黄玉', reason: '喜用土，黄玉左边主土旺生金' }],
+                        金: [{ icon: '⚪', item: '金属风铃', reason: '喜用金，风铃左边主纳财' }],
+                        水: [{ icon: '🌊', item: '流水摆件', reason: '喜用水，左侧流水主生财' }]
+                    },
+                    career: {
+                        木: [{ icon: '🎋', item: '竹制装饰', reason: '喜用木，竹子左边主晋升' }],
+                        火: [{ icon: '🔴', item: '红色中国结', reason: '喜用火，红结左边主吉祥' }],
+                        土: [{ icon: '🪨', item: '泰山石', reason: '喜用土，泰山石左边主靠山' }],
+                        金: [{ icon: '🏅', item: '金属奖杯', reason: '喜用金，奖杯左边主成就' }],
+                        水: [{ icon: '💎', item: '水晶', reason: '喜用水，水晶左边聚贵气' }]
+                    },
+                    love: {
+                        木: [{ icon: '🌸', item: '鲜花', reason: '喜用木，左侧鲜花招桃花' }],
+                        火: [{ icon: '💐', item: '干花', reason: '喜用火，干花左边主温暖' }],
+                        土: [{ icon: '🏺', item: '陶瓷花器', reason: '喜用土，陶瓷花器左边主稳固' }],
+                        金: [{ icon: '💍', item: '对杯', reason: '喜用金，成对物品左边主成双' }],
+                        水: [{ icon: '🌹', item: '永生花', reason: '喜用水，永生花左边主永恒' }]
+                    },
+                    study: {
+                        木: [{ icon: '📖', item: '经典书籍', reason: '喜用木，左侧书籍主学业' }],
+                        火: [{ icon: '💡', item: '小台灯', reason: '喜用火，灯光左边主智慧' }],
+                        土: [{ icon: '🪨', item: '黄蜡石', reason: '喜用土，石左边主稳固' }],
+                        金: [{ icon: '⚙️', item: '金属文具', reason: '喜用金，文具左边主效率' }],
+                        水: [{ icon: '🌊', item: '海洋图', reason: '喜用水，图左边主胸怀' }]
+                    },
+                    health: {
+                        木: [{ icon: '🌿', item: '绿萝', reason: '喜用木，绿植左边主健康' }],
+                        火: [{ icon: '🧘', item: '小型香薰', reason: '喜用火，香薰左边主放松' }],
+                        土: [{ icon: '🏺', item: '陶瓷', reason: '喜用土，陶瓷左边主稳固' }],
+                        金: [{ icon: '⚪', item: '银杯', reason: '喜用金，银器左边主健康' }],
+                        水: [{ icon: '💧', item: '水培植物', reason: '喜用水，植物左边主循环' }]
+                    }
                 },
-                // 前面（明堂位）- 属金，主财气进气
                 front: {
-                    木: [
-                        { icon: '🌱', item: '文竹', reason: '喜用木，前方文竹主学业文昌' },
-                        { icon: '🎋', item: '竹帘', reason: '竹帘前方透光主清新进气' },
-                        { icon: '📚', item: '横版书架', reason: '书籍横放前方主横财' },
-                        { icon: '🪵', item: '木相框', reason: '木框照片前方展示贵相' }
-                    ],
-                    火: [
-                        { icon: '💡', item: '明亮台灯', reason: '喜用火，前方明亮主财气进门' },
-                        { icon: '🕯️', item: '蜡烛灯', reason: '烛光前方主温暖进气' },
-                        { icon: '🔴', item: '红色地毯', reason: '红毯前方主喜庆纳财' },
-                        { icon: '☀️', item: '太阳镜', reason: '阳光反射前方主光明进气' }
-                    ],
-                    土: [
-                        { icon: '🏺', item: '陶瓷聚宝盆', reason: '喜用土，前方聚宝盆主守财' },
-                        { icon: '🪨', item: '黄蜡石', reason: '黄蜡石前方主土旺财' },
-                        { icon: '🧱', item: '红砖', reason: '红砖前方主砖砂进气' },
-                        { icon: '🍂', item: '陶罐', reason: '陶罐前方主储藏进气' }
-                    ],
-                    金: [
-                        { icon: '⚪', item: '金属保险箱', reason: '喜用金，前方保险箱主守财' },
-                        { icon: '🏅', item: '金属奖杯', reason: '奖杯前方展示主成就进气' },
-                        { icon: '⚙️', item: '金属雕塑', reason: '金属艺术品前方主精致进气' },
-                        { icon: '🪙', item: '金元宝', reason: '金元宝前方主直接旺财' }
-                    ],
-                    水: [
-                        { icon: '💧', item: '水培植物', reason: '喜用水，前方水生植物主生财' },
-                        { icon: '🌊', item: '流水摆件', reason: '流水前方主活财流动' },
-                        { icon: '🐟', item: '小型鱼缸', reason: '鱼缸前方主年年有余' },
-                        { icon: '💎', item: '黑曜石', reason: '黑曜石前方主辟邪进气' }
-                    ]
+                    wealth: {
+                        木: [{ icon: '📚', item: '横版书架', reason: '喜用木，前方书籍主横财' }],
+                        火: [{ icon: '💡', item: '明亮台灯', reason: '喜用火，灯光前方主明亮纳财' }],
+                        土: [{ icon: '🏺', item: '聚宝盆', reason: '喜用土，聚宝盆前方主守财' }],
+                        金: [{ icon: '🪙', item: '金元宝', reason: '喜用金，元宝前方主旺财' }],
+                        水: [{ icon: '🌊', item: '流水摆件', reason: '喜用水，流水前方主活财' }]
+                    },
+                    career: {
+                        木: [{ icon: '🌱', item: '文竹', reason: '喜用木，前方文竹主事业' }],
+                        火: [{ icon: '🔥', item: '红色地图', reason: '喜用火，红图前方主前景' }],
+                        土: [{ icon: '🧱', item: '砖雕', reason: '喜用土，砖雕前方主基础' }],
+                        金: [{ icon: '⚪', item: '金属地球仪', reason: '喜用金，地球仪前方主格局' }],
+                        水: [{ icon: '🌊', item: '海景图', reason: '喜用水，海图前方主胸怀' }]
+                    },
+                    love: {
+                        木: [{ icon: '🌸', item: '花艺', reason: '喜用木，前方花艺主桃花' }],
+                        火: [{ icon: '🕯️', item: '蜡烛', reason: '喜用火，蜡烛前方主浪漫' }],
+                        土: [{ icon: '💑', item: '双人艺术画', reason: '喜用土，双人画前方主稳定' }],
+                        金: [{ icon: '💍', item: '钻石画', reason: '喜用金，钻石前方主永恒' }],
+                        水: [{ icon: '🌙', item: '满月灯', reason: '喜用水，圆灯前方主圆满' }]
+                    },
+                    study: {
+                        木: [{ icon: '📚', item: '学习资料', reason: '喜用木，前方书籍主学业' }],
+                       火: [{ icon: '💡', item: '护眼台灯', reason: '喜用火，台灯前方主专注' }],
+                        土: [{ icon: '🪨', item: '镇纸', reason: '喜用土，镇纸前方主稳固' }],
+                        金: [{ icon: '⚙️', item: '订书机', reason: '喜用金，工具前方主效率' }],
+                        水: [{ icon: '🌊', item: '学习计划板', reason: '喜用水，计划板前方主条理' }]
+                    },
+                    health: {
+                        木: [{ icon: '🌿', item: '阔叶植物', reason: '喜用木，前方绿植主健康' }],
+                        火: [{ icon: '☀️', item: '阳光灯', reason: '喜用火，灯光前方主温暖' }],
+                        土: [{ icon: '🏺', item: '陶瓷', reason: '喜用土，陶瓷前方主稳固' }],
+                        金: [{ icon: '⚪', item: '金属健身用品', reason: '喜用金，健身品前方主锻炼' }],
+                        水: [{ icon: '💧', item: '小型喷泉', reason: '喜用水，水前方主活力' }]
+                    }
                 },
-                // 右边（白虎位）- 属土，主衡压权威
                 right: {
-                    木: [
-                        { icon: '🌿', item: '虎皮兰', reason: '右边白虎位配虎皮兰以木制木' },
-                        { icon: '🎋', item: '竹梯', reason: '竹梯右边主步步高升' },
-                        { icon: '📦', item: '木质收纳盒', reason: '木盒右边主收纳有序' },
-                        { icon: '🪵', item: '木雕动物', reason: '木雕右边主温和制虎' }
-                    ],
-                    火: [
-                        { icon: '🔴', item: '红色床旗', reason: '喜用火，右边红色以火制金虎' },
-                        { icon: '🔥', item: '壁炉装饰', reason: '壁炉右边主温暖制肃杀' },
-                        { icon: '🕯️', item: '蜡烛台', reason: '烛台右边主温馨制威' },
-                        { icon: '💡', item: '小夜灯', reason: '夜灯右边主柔和制刚' }
-                    ],
-                    土: [
-                        { icon: '🏺', item: '陶瓷老虎', reason: '喜用土，陶瓷老虎右边以土制金' },
-                        { icon: '🪨', item: '黄蜡石', reason: '黄蜡右边主土性平衡' },
-                        { icon: '🧱', item: '红砖', reason: '红砖右边主稳固制白虎' },
-                        { icon: '🍂', item: '陶土马', reason: '陶马右边主忠诚制虎' }
-                    ],
-                    金: [
-                        { icon: '⚪', item: '金属白虎', reason: '喜用金，金属白虎右边以金制金' },
-                        { icon: '⚙️', item: '金属权杖', reason: '权杖右边主权威制衡' },
-                        { icon: '🗡️', item: '金属剑', reason: '利剑右边以刚制刚' },
-                        { icon: '🔔', item: '铜钟', reason: '铜钟右边主声威制衡' }
-                    ],
-                    水: [
-                        { icon: '💧', item: '小型水托盘', reason: '喜用水，水托右边以水制金' },
-                        { icon: '🌊', item: '流水小盆', reason: '流水右边主柔和制刚' },
-                        { icon: '🐢', item: '石龟', reason: '石龟右边主稳重制衡' },
-                        { icon: '💎', item: '蓝水晶', reason: '蓝水晶右边主宁静制威' }
-                    ]
+                    wealth: {
+                        木: [{ icon: '🌿', item: '虎皮兰', reason: '喜用木，右边绿植主财库' }],
+                        火: [{ icon: '🔴', item: '红色中国结', reason: '喜用火，红结右边主吉祥' }],
+                        土: [{ icon: '🏺', item: '陶瓷', reason: '喜用土，陶瓷右边主稳固' }],
+                        金: [{ icon: '⚪', item: '金属装饰', reason: '喜用金，金属右边主硬财' }],
+                        水: [{ icon: '💧', item: '水托盘', reason: '喜用水，水托右边主聚财' }]
+                    },
+                    career: {
+                        木: [{ icon: '🎋', item: '竹帘', reason: '喜用木，竹帘右边主清高' }],
+                        火: [{ icon: '🔥', item: '壁炉', reason: '喜用火，壁炉右边主温暖' }],
+                        土: [{ icon: '🧱', item: '红砖', reason: '喜用土，砖右边主基础' }],
+                        金: [{ icon: '⚙️', item: '金属装饰', reason: '喜用金，金属右边主权威' }],
+                        水: [{ icon: '💎', item: '黑曜石', reason: '喜用水，黑曜石右边主坚定' }]
+                    },
+                    love: {
+                        木: [{ icon: '🌸', item: '粉色干花', reason: '喜用木，粉色右边主温柔' }],
+                        火: [{ icon: '🔴', item: '红色装饰', reason: '喜用火，红色右边主热情' }],
+                        土: [{ icon: '💑', item: '陶瓷情侣', reason: '喜用土，情侣右边主稳定' }],
+                        金: [{ icon: '💍', item: '对戒', reason: '喜用金，对戒右边主承诺' }],
+                        水: [{ icon: '🌙', item: '夜灯', reason: '喜用水，夜灯右边主温馨' }]
+                    },
+                    study: {
+                        木: [{ icon: '📦', item: '木质收纳', reason: '喜用木，收纳右边主有序' }],
+                        火: [{ icon: '💡', item: '小夜灯', reason: '喜用火，灯光右边主陪伴' }],
+                        土: [{ icon: '🪨', item: '黄蜡石', reason: '喜用土，石右边主专注' }],
+                        金: [{ icon: '⚙️', item: '金属笔筒', reason: '喜用金，笔筒右边主效率' }],
+                        水: [{ icon: '🌊', item: '海洋宝宝', reason: '喜用水，图右边主探索' }]
+                    },
+                    health: {
+                        木: [{ icon: '🌿', item: '绿萝', reason: '喜用木，绿植右边主健康' }],
+                        火: [{ icon: '🕯️', item: '香薰', reason: '喜用火，香薰右边主放松' }],
+                        土: [{ icon: '🏺', item: '陶瓷', reason: '喜用土，陶瓷右边主稳固' }],
+                        金: [{ icon: '⚪', item: '银器', reason: '喜用金，银器右边主健康' }],
+                        水: [{ icon: '💧', item: '水培', reason: '喜用水，水培右边主循环' }]
+                    }
                 }
             };
 
-            // 获取当前喜用神对应的物品库
-            const posItems = wuxingItems[pos];
+            // 获取对应建议
+            const posItems = fullItems[pos];
             if (!posItems) return [];
 
+            const fortuneItems = posItems[fortune];
+            if (!fortuneItems) return [];
+
             xiyongArr.forEach((xy, i) => {
-                const items = posItems[xy] || [];
+                const items = fortuneItems[xy] || [];
                 if (items.length > 0) {
-                    const item = items[i % items.length];
+                    const item = items[0];
                     let reason = item.reason;
-
-                    if (i === 0) {
-                        reason += '（喜用神首选，最适合你）';
-                    }
-
+                    if (i === 0) reason += '（喜用神首选，最适合你）';
                     suggestions.push({ icon: item.icon, item: item.item, reason });
                 }
             });
-
-            // 如果喜用神只有一个，补充一个默认的
-            if (suggestions.length < 2 && xiyongArr.length > 0) {
-                const defaultXY = xiyongArr[0];
-                const otherXY = ['木', '火', '土', '金', '水'].find(w => w !== defaultXY);
-                const items = posItems[otherXY] || [];
-                if (items.length > 1) {
-                    suggestions.push({ icon: items[1].icon, item: items[1].item, reason: items[1].reason + '（辅助）' });
-                }
-            }
 
             return suggestions;
         }
