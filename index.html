@@ -1825,21 +1825,20 @@
             });
         });
 
-        // 罗盘交互
+        // 罗盘交互 - 拖动外圈旋转
         const compass = document.getElementById('compass');
-        const compassCenter = document.getElementById('compassCenter');
         let isDragging = false;
         let currentAngle = 0;
         let startAngle = 0;
 
-        // 旋转罗盘
-        function rotateCompass(angle) {
-            currentAngle = angle % 360;
-            const dial = document.querySelector('.compass-dial');
-            if (dial) {
-                dial.style.transform = `rotate(${currentAngle}deg)`;
-            }
-        }
+        // 拖动罗盘外圈
+        compass.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            const rect = compass.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
+        });
 
         function updateDirection(angle) {
             currentAngle = angle % 360;
@@ -1890,14 +1889,7 @@
             document.getElementById('compassHint').textContent = '已选择: ' + dirLabels[dir];
         }
 
-        compassCenter.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            const rect = compass.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-        });
-
+        // 鼠标拖动旋转罗盘
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
             const rect = compass.getBoundingClientRect();
@@ -1910,16 +1902,6 @@
 
         document.addEventListener('mouseup', () => {
             isDragging = false;
-        });
-
-        // 点击罗盘外圈也可以旋转
-        compass.addEventListener('click', (e) => {
-            if (e.target === compassCenter) return;
-            const rect = compass.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-            updateDirection(angle);
         });
 
         // 方向按钮点击
