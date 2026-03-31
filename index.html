@@ -378,11 +378,12 @@
         }
 
         .mingge-result {
-            background: linear-gradient(135deg, rgba(26, 71, 42, 0.3), rgba(201, 162, 39, 0.1));
-            border: 1px solid var(--accent);
-            border-radius: 12px;
-            padding: 1.25rem;
+            background: linear-gradient(135deg, rgba(26, 71, 42, 0.4), rgba(15, 31, 23, 0.8));
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            padding: 1.5rem;
             margin-bottom: 1.5rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(201, 162, 39, 0.15);
         }
 
         .mingge-result.first-row {
@@ -395,6 +396,74 @@
             gap: 1rem;
         }
 
+        .mingge-title {
+            font-size: 1.2rem;
+            color: var(--accent-glow);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        .mingge-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 500px) {
+            .mingge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .mingge-item {
+            background: rgba(10, 21, 16, 0.6);
+            border-radius: 12px;
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .mingge-item-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .mingge-item-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .mingge-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            text-align: center;
+            line-height: 1.6;
+            padding: 0.75rem;
+            background: rgba(201, 162, 39, 0.1);
+            border-radius: 10px;
+        }
+
+        /* 结果四宫格 */
+        .result-grid .direction-result {
+            background: linear-gradient(145deg, rgba(26, 71, 42, 0.3), rgba(15, 31, 23, 0.6));
+            border-radius: 16px;
+            padding: 1rem;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            transition: all 0.3s;
+        }
+
+        .result-grid .direction-result:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.2);
+        }
+
         @media (max-width: 600px) {
             .mingge-result.first-row + .result-grid {
                 grid-template-columns: 1fr;
@@ -404,15 +473,9 @@
         /* 罗盘样式 */
         .compass-container {
             position: relative;
-            width: 280px;
-            height: 280px;
+            width: 260px;
+            height: 260px;
             margin: 1rem auto;
-            cursor: grab;
-            user-select: none;
-        }
-
-        .compass-container:active {
-            cursor: grabbing;
         }
 
         .compass-ring {
@@ -420,37 +483,44 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: radial-gradient(circle, var(--bg-card) 0%, var(--bg-dark) 100%);
+            background: linear-gradient(145deg, #1a3d2a, #0d1f15);
             border: 3px solid var(--accent);
-            box-shadow: 0 0 20px rgba(201, 162, 39, 0.3);
+            box-shadow: 0 0 30px rgba(201, 162, 39, 0.3), inset 0 0 20px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease-out;
         }
 
-        .compass-needle {
+        .compass-dial {
             position: absolute;
-            top: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transition: transform 0.3s ease-out;
+        }
+
+        .compass-dial::before {
+            content: '';
+            position: absolute;
+            top: 8px;
             left: 50%;
-            width: 100px;
-            height: 20px;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid var(--accent);
         }
 
-        .compass-needle-red {
+        .compass-dial::after {
+            content: '';
             position: absolute;
-            width: 50px;
-            height: 20px;
-            background: #e74c3c;
-            clip-path: polygon(100% 50%, 0 0, 0 100%);
-            left: 50px;
-        }
-
-        .compass-needle-white {
-            position: absolute;
-            width: 50px;
-            height: 20px;
-            background: #ecf0f1;
-            clip-path: polygon(0 50%, 100% 0, 100% 100%);
-            left: 0;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 12px solid var(--text-secondary);
         }
 
         .compass-labels {
@@ -462,26 +532,55 @@
 
         .compass-label {
             position: absolute;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Noto Sans SC', sans-serif;
         }
 
-        .compass-label.north { top: 10px; left: 50%; transform: translateX(-50%); color: #e74c3c; }
-        .compass-label.south { bottom: 10px; left: 50%; transform: translateX(-50%); }
-        .compass-label.east { right: 15px; top: 50%; transform: translateY(-50%); }
-        .compass-label.west { left: 15px; top: 50%; transform: translateY(-50%); }
+        .compass-label.north {
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #e74c3c;
+        }
+
+        .compass-label.south {
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+        }
+
+        .compass-label.east {
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .compass-label.west {
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
 
         .compass-center {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 30px;
-            height: 30px;
-            background: var(--accent);
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, var(--accent) 0%, #8b7019 100%);
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(201, 162, 39, 0.5);
+            box-shadow: 0 0 15px rgba(201, 162, 39, 0.6), inset 0 2px 5px rgba(255,255,255,0.3);
+            cursor: grab;
+            z-index: 10;
+        }
+
+        .compass-center:active {
+            cursor: grabbing;
         }
 
         .compass-directions {
@@ -594,21 +693,19 @@
 
             <div class="compass-container" id="compass">
                 <div class="compass-ring">
-                    <div class="compass-labels">
-                        <span class="compass-label north">北</span>
-                        <span class="compass-label south">南</span>
-                        <span class="compass-label east">东</span>
-                        <span class="compass-label west">西</span>
+                    <div class="compass-dial">
+                        <div class="compass-labels">
+                            <span class="compass-label north">北</span>
+                            <span class="compass-label south">南</span>
+                            <span class="compass-label east">东</span>
+                            <span class="compass-label west">西</span>
+                        </div>
                     </div>
-                    <div class="compass-needle" id="compassNeedle">
-                        <div class="compass-needle-red"></div>
-                        <div class="compass-needle-white"></div>
-                    </div>
-                    <div class="compass-center"></div>
+                    <div class="compass-center" id="compassCenter"></div>
                 </div>
             </div>
 
-            <p class="compass-hint" id="compassHint">👉 点击罗盘拖动调整方向</p>
+            <p class="compass-hint" id="compassHint">👉 拖动中心圆点调整方向</p>
 
             <div class="compass-directions">
                 <button class="compass-dir-btn" data-dir="east">坐东朝西</button>
@@ -1734,26 +1831,41 @@
 
         // 罗盘交互
         const compass = document.getElementById('compass');
-        const needle = document.getElementById('compassNeedle');
+        const compassCenter = document.getElementById('compassCenter');
         let isDragging = false;
         let currentAngle = 0;
         let startAngle = 0;
 
+        // 旋转罗盘
+        function rotateCompass(angle) {
+            currentAngle = angle % 360;
+            const dial = document.querySelector('.compass-dial');
+            if (dial) {
+                dial.style.transform = `rotate(${currentAngle}deg)`;
+            }
+        }
+
         function updateDirection(angle) {
             currentAngle = angle % 360;
-            needle.style.transform = `translate(-50%, -50%) rotate(${currentAngle}deg)`;
 
-            // 根据角度确定坐向
+            // 旋转罗盘外圈（dial），而不是中心点
+            const dial = document.querySelector('.compass-dial');
+            if (dial) {
+                dial.style.transform = `rotate(${currentAngle}deg)`;
+            }
+
+            // 根据角度确定坐向（基于指针方向，也就是 currentAngle）
             let dir = null;
             const normalizedAngle = (currentAngle + 360) % 360;
 
-            if (normalizedAngle >= 337.5 || normalizedAngle < 22.5) dir = 'south'; // 指南朝北
+            // 指针指北时为坐南朝北，指针指南时为坐北朝南
+            if (normalizedAngle >= 337.5 || normalizedAngle < 22.5) dir = 'south'; // 指向正北 -> 坐南朝北
             else if (normalizedAngle >= 22.5 && normalizedAngle < 67.5) dir = 'sw';
-            else if (normalizedAngle >= 67.5 && normalizedAngle < 112.5) dir = 'west'; // 指西朝东
+            else if (normalizedAngle >= 67.5 && normalizedAngle < 112.5) dir = 'west';
             else if (normalizedAngle >= 112.5 && normalizedAngle < 157.5) dir = 'nw';
-            else if (normalizedAngle >= 157.5 && normalizedAngle < 202.5) dir = 'north'; // 指北朝南
+            else if (normalizedAngle >= 157.5 && normalizedAngle < 202.5) dir = 'north'; // 指向正南 -> 坐北朝南
             else if (normalizedAngle >= 202.5 && normalizedAngle < 247.5) dir = 'ne';
-            else if (normalizedAngle >= 247.5 && normalizedAngle < 292.5) dir = 'east'; // 指东朝西
+            else if (normalizedAngle >= 247.5 && normalizedAngle < 292.5) dir = 'east';
             else if (normalizedAngle >= 292.5 && normalizedAngle < 337.5) dir = 'se';
 
             if (dir) {
@@ -1782,7 +1894,7 @@
             document.getElementById('compassHint').textContent = '已选择: ' + dirLabels[dir];
         }
 
-        compass.addEventListener('mousedown', (e) => {
+        compassCenter.addEventListener('mousedown', (e) => {
             isDragging = true;
             const rect = compass.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
@@ -1802,6 +1914,16 @@
 
         document.addEventListener('mouseup', () => {
             isDragging = false;
+        });
+
+        // 点击罗盘外圈也可以旋转
+        compass.addEventListener('click', (e) => {
+            if (e.target === compassCenter) return;
+            const rect = compass.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
+            updateDirection(angle);
         });
 
         // 方向按钮点击
