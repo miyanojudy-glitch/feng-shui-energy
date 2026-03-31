@@ -486,7 +486,6 @@
             background: linear-gradient(145deg, #1a3d2a, #0d1f15);
             border: 3px solid var(--accent);
             box-shadow: 0 0 30px rgba(201, 162, 39, 0.3), inset 0 0 20px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease-out;
         }
 
         .compass-dial {
@@ -494,33 +493,33 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            transition: transform 0.3s ease-out;
+            transition: transform 0.15s ease-out;
         }
 
         .compass-dial::before {
             content: '';
             position: absolute;
-            top: 8px;
+            top: 10px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 12px solid var(--accent);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 16px solid var(--accent);
         }
 
         .compass-dial::after {
             content: '';
             position: absolute;
-            bottom: 8px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 12px solid var(--text-secondary);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 16px solid var(--text-secondary);
         }
 
         .compass-labels {
@@ -532,34 +531,34 @@
 
         .compass-label {
             position: absolute;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
             font-family: 'Noto Sans SC', sans-serif;
         }
 
         .compass-label.north {
-            top: 15px;
+            top: 12px;
             left: 50%;
             transform: translateX(-50%);
             color: #e74c3c;
         }
 
         .compass-label.south {
-            bottom: 15px;
+            bottom: 12px;
             left: 50%;
             transform: translateX(-50%);
             color: var(--text-secondary);
         }
 
         .compass-label.east {
-            right: 15px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-secondary);
         }
 
         .compass-label.west {
-            left: 15px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-secondary);
@@ -693,29 +692,28 @@
 
             <div class="compass-container" id="compass">
                 <div class="compass-ring">
-                    <div class="compass-dial">
-                        <div class="compass-labels">
-                            <span class="compass-label north">北</span>
-                            <span class="compass-label south">南</span>
-                            <span class="compass-label east">东</span>
-                            <span class="compass-label west">西</span>
-                        </div>
-                    </div>
-                    <div class="compass-center" id="compassCenter"></div>
+                    <div class="compass-dial"></div>
                 </div>
+                <div class="compass-labels">
+                    <span class="compass-label north">北</span>
+                    <span class="compass-label south">南</span>
+                    <span class="compass-label east">东</span>
+                    <span class="compass-label west">西</span>
+                </div>
+                <div class="compass-center" id="compassCenter"></div>
             </div>
 
-            <p class="compass-hint" id="compassHint">👉 拖动中心圆点调整方向</p>
+            <p class="compass-hint" id="compassHint">👉 拖动罗盘中心调整方向</p>
 
             <div class="compass-directions">
+                <button class="compass-dir-btn" data-dir="north">坐北朝南</button>
+                <button class="compass-dir-btn" data-dir="ne">坐东北朝西南</button>
                 <button class="compass-dir-btn" data-dir="east">坐东朝西</button>
                 <button class="compass-dir-btn" data-dir="se">坐东南朝西北</button>
                 <button class="compass-dir-btn" data-dir="south">坐南朝北</button>
                 <button class="compass-dir-btn" data-dir="sw">坐西南朝东北</button>
                 <button class="compass-dir-btn" data-dir="west">坐西朝东</button>
                 <button class="compass-dir-btn" data-dir="nw">坐西北朝东南</button>
-                <button class="compass-dir-btn" data-dir="north">坐北朝南</button>
-                <button class="compass-dir-btn" data-dir="ne">坐东北朝西南</button>
             </div>
 
             <div class="btn-group">
@@ -1466,13 +1464,13 @@
             const directions = directionMap[state.direction];
             let data = fengShuiDB[state.scene][state.fortune];
 
-            // 如果有八字结果，生成完全个性化的建议
+            // 如果有八字结果，显示命格分析在第一行
             if (baziResult) {
                 console.log('Using personalized suggestions for:', baziResult.xiyongshen);
                 const xiyongArr = baziResult.xiyongshen.split('/');
                 const dayWuxing = rizhuWuxing[baziResult.dayTG];
 
-                // 在结果顶部显示命格信息（单独一行）
+                // 命格信息（占满整行）
                 const minggeInfo = document.createElement('div');
                 minggeInfo.className = 'mingge-result first-row';
                 minggeInfo.innerHTML = `
@@ -1495,14 +1493,14 @@
                             <div class="mingge-item-value">${baziResult.xiyongshen}</div>
                         </div>
                     </div>
-                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.75rem; text-align: center;">
+                    <p class="mingge-desc">
                         你的${dayWuxing}日主${baziResult.strength.desc}，喜用${xiyongArr.join('、')}，多使用这些五行属性的物品效果最佳
                     </p>
                 `;
                 grid.appendChild(minggeInfo);
             }
 
-            // 创建四宫格容器
+            // 四宫格容器
             const gridContainer = document.createElement('div');
             gridContainer.className = 'result-grid';
 
@@ -1512,11 +1510,9 @@
                 const dirName = directions[pos];
                 let suggestions = [];
 
-                // 如果有八字结果，生成完全定制化的建议
                 if (baziResult) {
                     suggestions = generatePersonalizedSuggestions(pos, dirName, state.fortune, baziResult);
                 } else {
-                    // 使用默认建议
                     suggestions = data[pos] || [];
                 }
 
