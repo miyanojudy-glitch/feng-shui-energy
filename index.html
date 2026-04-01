@@ -1302,81 +1302,108 @@
             };
         }
 
-        // 分析八字五行
+        // 分析八字五行（含藏干）
         function analyzeWuxing(bazi) {
             const all = bazi.year + bazi.month + bazi.day + bazi.hour;
             let wuxingCount = { 木: 0, 火: 0, 土: 0, 金: 0, 水: 0 };
+
+            // 藏干表：每个地支可能包含的天干
+            const canggan = {
+                '子': ['癸'], '丑': ['己', '癸', '辛'], '寅': ['甲', '丙', '戊'],
+                '卯': ['乙'], '辰': ['戊', '乙', '癸'], '巳': ['丙', '庚', '戊'],
+                '午': ['丁', '己'], '未': ['己', '丁', '乙'], '申': ['庚', '壬', '戊'],
+                '酉': ['辛'], '戌': ['戊', '辛', '丁'], '亥': ['壬', '甲']
+            };
 
             // 统计天干五行
             for (let char of all) {
                 if (tganWuxing[char]) wuxingCount[tganWuxing[char]]++;
                 if (dizhiWuxing[char]) wuxingCount[dizhiWuxing[char]]++;
+                // 统计藏干五行
+                if (canggan[char]) {
+                    for (let cg of canggan[char]) {
+                        if (tganWuxing[cg]) wuxingCount[tganWuxing[cg]]++;
+                    }
+                }
             }
 
             return wuxingCount;
         }
 
-        // 判断日主强弱
-        function judgeStrength(wuxingCount, dayTG) {
-            const rz = rizhuWuxing[dayTG];
-            const count = wuxingCount[rz];
+        // 相生相克关系：生我者为用神，同我者为比和
+        const wuxingSheng = {
+            '木': '水', '火': '木', '土': '火', '金': '土', '水': '金'
+        };
+        const wuxingKe = {
+            '木': '金', '火': '水', '土': '木', '金': '火', '水': '土'
+        };
+        const wuxingBihe = {
+            '木': '木', '火': '火', '土': '土', '金': '金', '水': '水'
+        };
 
-            if (count >= 3) return { strength: '强', desc: '偏旺' };
-            if (count >= 2) return { strength: '中', desc: '中和' };
-            return { strength: '弱', desc: '偏弱' };
+        // 判断日主强弱（综合评估）
+        function judgeStrength(wuxingCount, dayTG) {
+            const rz = rizhuWuxing[dayTG]; // 日主五行
+            const rzCount = wuxingCount[rz];
+
+            // 计算其他五行总数
+            let otherTotal = 0;
+            for (let w in wuxingCount) {
+                if (w !== rz) otherTotal += wuxingCount[w];
+            }
+
+            // 日主占比来判断强弱
+            const ratio = rzCount / (rzCount + otherTotal || 1);
+
+            // 综合判断
+            if (rzCount >= 3 || ratio >= 0.5) {
+                return { strength: '强', desc: '偏旺', type: 'strong' };
+            } else if (rzCount === 0 || ratio < 0.15) {
+                return { strength: '弱', desc: '偏弱', type: 'weak' };
+            } else {
+                return { strength: '中', desc: '中和', type: 'balanced' };
+            }
         }
 
-        // 确定喜用神
+        // 确定喜用神（更缜密的逻辑）
         function getXiyongshen(wuxingCount, dayTG, strength) {
-            const rz = rizhuWuxing[dayTG];
-            const count = wuxingCount[rz];
-            const otherWuxing = ['木', '火', '土', '金', '水'].filter(w => w !== rz);
+            const rz = rizhuWuxing[dayTG]; // 日主五行
 
-            // 找出最弱的五行
+            // 找出最弱的五行（喜用神的第二选择）
             let minCount = Infinity;
             let weakest = '';
-            otherWuxing.forEach(w => {
+            for (let w in wuxingCount) {
                 if (wuxingCount[w] < minCount) {
                     minCount = wuxingCount[w];
                     weakest = w;
                 }
-            });
-
-            // 相生相克逻辑
-            const xiyong = [];
-            if (rz === '木') {
-                if (strength.strength === '弱') {
-                    xiyong.push('水', '木');
-                } else {
-                    xiyong.push('金', '土');
-                }
-            } else if (rz === '火') {
-                if (strength.strength === '弱') {
-                    xiyong.push('木', '火');
-                } else {
-                    xiyong.push('水', '金');
-                }
-            } else if (rz === '土') {
-                if (strength.strength === '弱') {
-                    xiyong.push('火', '土');
-                } else {
-                    xiyong.push('木', '水');
-                }
-            } else if (rz === '金') {
-                if (strength.strength === '弱') {
-                    xiyong.push('土', '金');
-                } else {
-                    xiyong.push('火', '木');
-                }
-            } else if (rz === '水') {
-                if (strength.strength === '弱') {
-                    xiyong.push('金', '水');
-                } else {
-                    xiyong.push('土', '火');
-                }
             }
 
-            return xiyong.join('/');
+            const xiyong = [];
+
+            if (strength.type === 'weak') {
+                // 日主弱：喜生我者（印星）+ 同我者（比和星）
+                xiyong.push(wuxingSheng[rz]); // 生日主者
+                xiyong.push(wuxingBihe[rz]); // 与日主相同者
+            } else if (strength.type === 'strong') {
+                // 日主旺：喜泄秀者（食伤）+ 克我者（财星）
+                // 简化：日主强时，用官克或食泄来平衡
+                const keZhe = wuxingKe[rz]; // 日主克者
+                xiyong.push(keZhe);
+                // ��可考虑泄秀的
+                if (keZhe !== weakest) {
+                    xiyong.push(weakest);
+                }
+            } else {
+                // 中和：平衡为主
+                xiyong.push(weakest);
+                xiyong.push(wuxingSheng[rz]);
+            }
+
+            // 去重并保持顺序
+            const result = [...new Set(xiyong)];
+
+            return result.join('/');
         }
 
         // 确定命格
@@ -1791,9 +1818,9 @@
             const dayWuxing = rizhuWuxing[bazi.dayTG];
             const xiyong = baziResult.xiyongshen.split('/');
 
-            if (bazi.strength.strength === '弱') {
+            if (bazi.strength.type === 'weak') {
                 tips.push('日主偏弱，建议多用生助日主' + dayWuxing + '的物品');
-            } else if (bazi.strength.strength === '强') {
+            } else if (bazi.strength.type === 'strong') {
                 tips.push('日主偏旺，可用泄秀物品平衡');
             }
 
