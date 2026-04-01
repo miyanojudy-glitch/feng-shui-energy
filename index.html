@@ -520,7 +520,6 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            pointer-events: none;
         }
 
         .compass-label {
@@ -530,6 +529,7 @@
             font-family: 'Noto Sans SC', sans-serif;
             transition: all 0.3s ease;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            cursor: pointer;
         }
 
         .compass-label:hover {
@@ -546,6 +546,7 @@
 
         .compass-label.north:hover {
             transform: translateX(-50%) scale(1.15);
+            text-shadow: 0 0 15px #e74c3c;
         }
 
         .compass-label.south {
@@ -557,6 +558,7 @@
 
         .compass-label.south:hover {
             transform: translateX(-50%) scale(1.15);
+            text-shadow: 0 0 15px var(--text-secondary);
         }
 
         .compass-label.east {
@@ -568,6 +570,7 @@
 
         .compass-label.east:hover {
             transform: translateY(-50%) scale(1.15);
+            text-shadow: 0 0 15px var(--text-secondary);
         }
 
         .compass-label.west {
@@ -575,6 +578,11 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-secondary);
+        }
+
+        .compass-label.west:hover {
+            transform: translateY(-50%) scale(1.15);
+            text-shadow: 0 0 15px var(--text-secondary);
         }
 
         .compass-center {
