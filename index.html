@@ -525,34 +525,53 @@
 
         .compass-label {
             position: absolute;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             font-family: 'Noto Sans SC', sans-serif;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .compass-label:hover {
+            transform: scale(1.15);
+            text-shadow: 0 0 15px currentColor;
         }
 
         .compass-label.north {
-            top: 12px;
+            top: 8px;
             left: 50%;
             transform: translateX(-50%);
             color: #e74c3c;
         }
 
+        .compass-label.north:hover {
+            transform: translateX(-50%) scale(1.15);
+        }
+
         .compass-label.south {
-            bottom: 12px;
+            bottom: 8px;
             left: 50%;
             transform: translateX(-50%);
             color: var(--text-secondary);
         }
 
+        .compass-label.south:hover {
+            transform: translateX(-50%) scale(1.15);
+        }
+
         .compass-label.east {
-            right: 12px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-secondary);
         }
 
+        .compass-label.east:hover {
+            transform: translateY(-50%) scale(1.15);
+        }
+
         .compass-label.west {
-            left: 12px;
+            left: 8px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-secondary);
@@ -686,18 +705,19 @@
 
             <div class="compass-container" id="compass">
                 <div class="compass-ring">
-                    <div class="compass-dial"></div>
-                </div>
-                <div class="compass-labels">
-                    <span class="compass-label north">北</span>
-                    <span class="compass-label south">南</span>
-                    <span class="compass-label east">东</span>
-                    <span class="compass-label west">西</span>
+                    <div class="compass-dial">
+                        <div class="compass-labels">
+                            <span class="compass-label north">北</span>
+                            <span class="compass-label south">南</span>
+                            <span class="compass-label east">东</span>
+                            <span class="compass-label west">西</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="compass-center" id="compassCenter"></div>
             </div>
 
-            <p class="compass-hint" id="compassHint">👉 拖动罗盘中心调整方向</p>
+            <p class="compass-hint" id="compassHint">👉 拖动罗盘外圈调整方向</p>
 
             <div class="compass-directions">
                 <button class="compass-dir-btn" data-dir="north">坐北朝南</button>
