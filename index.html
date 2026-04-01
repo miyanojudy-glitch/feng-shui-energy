@@ -532,21 +532,17 @@
             cursor: pointer;
         }
 
-        .compass-label:hover {
-            transform: scale(1.15);
-            text-shadow: 0 0 15px currentColor;
-        }
-
         .compass-label.north {
             top: 8px;
             left: 50%;
             transform: translateX(-50%);
             color: #e74c3c;
+            z-index: 10;
         }
 
         .compass-label.north:hover {
-            transform: translateX(-50%) scale(1.15);
-            text-shadow: 0 0 15px #e74c3c;
+            transform: translateX(-50%) scale(1.3);
+            text-shadow: 0 0 20px #e74c3c, 0 0 40px #e74c3c;
         }
 
         .compass-label.south {
@@ -554,11 +550,12 @@
             left: 50%;
             transform: translateX(-50%);
             color: var(--text-secondary);
+            z-index: 10;
         }
 
         .compass-label.south:hover {
-            transform: translateX(-50%) scale(1.15);
-            text-shadow: 0 0 15px var(--text-secondary);
+            transform: translateX(-50%) scale(1.3);
+            text-shadow: 0 0 20px var(--text-secondary), 0 0 40px var(--text-secondary);
         }
 
         .compass-label.east {
@@ -566,11 +563,12 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-secondary);
+            z-index: 10;
         }
 
         .compass-label.east:hover {
-            transform: translateY(-50%) scale(1.15);
-            text-shadow: 0 0 15px var(--text-secondary);
+            transform: translateY(-50%) scale(1.3);
+            text-shadow: 0 0 20px var(--text-secondary), 0 0 40px var(--text-secondary);
         }
 
         .compass-label.west {
@@ -578,11 +576,12 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-secondary);
+            z-index: 10;
         }
 
         .compass-label.west:hover {
-            transform: translateY(-50%) scale(1.15);
-            text-shadow: 0 0 15px var(--text-secondary);
+            transform: translateY(-50%) scale(1.3);
+            text-shadow: 0 0 20px var(--text-secondary), 0 0 40px var(--text-secondary);
         }
 
         .compass-center {
