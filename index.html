@@ -390,6 +390,21 @@
             margin-bottom: 1.5rem;
         }
 
+        .bazi-reason {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed rgba(201, 162, 39, 0.3);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .bazi-reason-title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
         .mingge-title {
             font-size: 1.2rem;
             color: var(--accent-glow);
@@ -845,6 +860,7 @@
                     <div class="xingyongshen-title">喜用神</div>
                     <div class="xingyongshen-value" id="xiyongshen">-</div>
                 </div>
+                <div class="bazi-reason" id="baziReason"></div>
             </div>
 
             <div class="btn-group">
@@ -1488,8 +1504,67 @@
                 `<span class="wuxing-tag ${getWuxingClass(w)}">${w}</span>`
             ).join(' ');
 
+            // 生成推理逻辑说明
+            generateBaziReason(bazi, wuxingCount, dayTG, strength, xiyongshen);
+
             document.getElementById('minggeResult').classList.remove('hidden');
             document.getElementById('analyzeBazi').textContent = '重新分析';
+        }
+
+        // 生成八字推理说明
+        function generateBaziReason(bazi, wuxingCount, dayTG, strength, xiyongshen) {
+            const rz = rizhuWuxing[dayTG];
+            const xiyongArr = xiyongshen.split('/');
+
+            // 统计八字中各五行数量
+            const wuxingSummary = Object.entries(wuxingCount)
+                .map(([w, c]) => `${w}:${c}个`)
+                .join('、');
+
+            // 生成强弱判断依据
+            let strengthReason = '';
+            const total = Object.values(wuxingCount).reduce((a, b) => a + b, 0);
+            const rzCount = wuxingCount[rz];
+            const rzRatio = ((rzCount / total) * 100).toFixed(0);
+
+            if (strength.type === 'strong') {
+                strengthReason = `日主${rz}在八字中有${rzCount}个，占比${rzRatio}%，超过50%，判断为偏旺`;
+            } else if (strength.type === 'weak') {
+                strengthReason = `日主${rz}在八字中有${rzCount}个，占比${rzRatio}%，低于15%，判断为偏弱`;
+            } else {
+                strengthReason = `日主${rz}在八字中有${rzCount}个，占比${rzRatio}%，判断为中和`;
+            }
+
+            // 生成喜用神依据
+            let xiyongReason = '';
+            if (strength.type === 'weak') {
+                const sheng = wuxingSheng[rz]; // 生日主者
+                xiyongReason = `日主偏弱，需要生助。${rz}被${sheng}所生，故用${sheng}（印星）+ ${rz}（比和星）来增强能量`;
+            } else if (strength.type === 'strong') {
+                const ke = wuxingKe[rz]; // 日主克者
+                // 找出最弱的五行
+                let minWuxing = '';
+                let minCount = Infinity;
+                for (let w in wuxingCount) {
+                    if (wuxingCount[w] < minCount) {
+                        minCount = wuxingCount[w];
+                        minWuxing = w;
+                    }
+                }
+                xiyongReason = `日主偏旺，需要泄秀平衡。${rz}克${ke}，可用${ke}（财星）泄秀，或用${minWuxing}平衡`;
+            } else {
+                xiyongReason = `日主中和，保持平衡为主`;
+            }
+
+            const reasonHTML = `
+                <div class="bazi-reason">
+                    <div class="bazi-reason-title">📊 推理逻辑</div>
+                    <p>① 八字五行分布：${wuxingSummary}</p>
+                    <p>② ${strengthReason}</p>
+                    <p>③ ${xiyongReason}</p>
+                </div>
+            `;
+            document.getElementById('baziReason').innerHTML = reasonHTML;
         }
 
         // 八字输入验证
