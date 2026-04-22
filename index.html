@@ -405,6 +405,31 @@
             margin-bottom: 0.5rem;
         }
 
+        .liunian-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .liunian-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .liunian-dir {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .liunian-star {
+            font-size: 0.7rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
         .mingge-title {
             font-size: 1.2rem;
             color: var(--accent-glow);
@@ -787,6 +812,33 @@
             <div class="btn-group">
                 <button class="btn" id="back3">← 上一步</button>
                 <button class="btn btn-primary" id="next3" disabled>下一步 →</button>
+            </div>
+        </div>
+
+        <!-- 步骤3.3: 流年（可选） -->
+        <div class="content-card hidden" id="step33">
+            <h3 class="section-title">📅 想看流年运势？选择年份</h3>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                可选，查看特定年份的运势影响（不选则只看喜用神）
+            </p>
+
+            <div class="bazi-input">
+                <div>
+                    <label>流年</label>
+                    <select id="liunianYear">
+                        <option value="">不选择（默认今年）</option>
+                    </select>
+                </div>
+            </div>
+
+            <p style="text-align: center; color: var(--accent); font-size: 0.8rem; margin-top: 1rem;">
+                💡 飞星入中宫方位将根据流年自动计算
+            </p>
+
+            <div class="btn-group">
+                <button class="btn" id="back33">← 上一步</button>
+                <button class="btn" id="skipLiunian">跳过 →</button>
+                <button class="btn btn-primary" id="next33">下一步 →</button>
             </div>
         </div>
 
@@ -1249,6 +1301,15 @@
                 opt.textContent = day + '日';
                 daySelect.appendChild(opt);
             }
+
+            // 初始化流年选择（2020-2035）
+            const liunianSelect = document.getElementById('liunianYear');
+            for (let year = 2035; year >= 2020; year--) {
+                const opt = document.createElement('option');
+                opt.value = year;
+                opt.textContent = year + '年';
+                liunianSelect.appendChild(opt);
+            }
         }
 
         // 八字天干地支
@@ -1356,6 +1417,62 @@
         const wuxingBihe = {
             '木': '木', '火': '火', '土': '土', '金': '金', '水': '水'
         };
+
+        // 飞星计算（九宫飞布）
+        // 根据流年计算中宫星，然后按顺逆飞布
+        function getFlyingStars(year) {
+            // 流年九星按洛书顺序：1白、2黑、3碧、4绿、5黄、6白、7赤、8白、9紫
+            // 年份数字之和取余（2024 = 2+0+2+4=8 → 8白）
+            const yearNum = year % 100;
+            const digitSum = Math.floor(yearNum / 10) + (yearNum % 10);
+            const baseStar = (9 - (digitSum % 9)) || 9; // 9紫
+
+            // 九宫飞星位置（飞入中宫的星）
+            const flyStar = (baseStar - 1 + 9) % 9 + 1;
+
+            // 飞星位置计算（阳宅顺飞）
+            // 坎1坤2震3巽4中5乾6兑7艮8离9
+            const starPositions = {};
+            const directions = ['north', 'northeast', 'east', 'southeast', 'center', 'northwest', 'west', 'southwest', 'south'];
+            const stars = [];
+
+            // 生成飞星序列（顺飞）
+            for (let i = 0; i < 9; i++) {
+                const pos = (flyStar - 1 + i) % 9 + 1;
+                stars.push(pos);
+            }
+
+            // 映射到方位
+            directions.forEach((dir, i) => {
+                starPositions[dir] = stars[i];
+            });
+
+            // 九星五行
+            const starWuxing = {
+                1: '水', 2: '土', 3: '木', 4: '木',
+                5: '土', 6: '金', 7: '金', 8: '土', 9: '火'
+            };
+
+            // 九星吉凶
+            const starFortune = {
+                1: '中平', 2: '凶', 3: '小凶', 4: '小吉',
+                5: '大凶', 6: '吉', 7: '吉', 8: '吉', 9: '吉'
+            };
+
+            // 九星名称
+            const starNames = {
+                1: '一白水星', 2: '二黑土星', 3: '三碧木星', 4: '四绿木星',
+                5: '五黄火星', 6: '六白金星', 7: '七赤金星', 8: '八白土星', 9: '九紫火星'
+            };
+
+            return {
+                positions: starPositions,
+                wuxing: starWuxing,
+                fortune: starFortune,
+                names: starNames,
+                centerStar: flyStar
+            };
+        }
 
         // 判断日主强弱（综合评估）
         function judgeStrength(wuxingCount, dayTG) {
@@ -1586,6 +1703,61 @@
 
             const directions = directionMap[state.direction];
             let data = fengShuiDB[state.scene][state.fortune];
+
+            // 流年运势展示
+            if (state.liunian) {
+                const flyStars = getFlyingStars(state.liunian);
+                const liunianInfo = document.createElement('div');
+                liunianInfo.className = 'mingge-result first-row';
+                liunianInfo.innerHTML = `
+                    <h4 class="mingge-title">📅 ${state.liunian}年流年运势</h4>
+                    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1rem;">
+                        飞星入中宫：<strong style="color: var(--accent);">${flyStars.names[flyStars.centerStar]}</strong>
+                    </p>
+                    <div class="liunian-grid">
+                        <div class="liunian-item">
+                            <div class="liunian-dir">北</div>
+                            <div class="liunian-star">${flyStars.positions.north ? flyStars.names[flyStars.positions.north] : '-'}</div>
+                        </div>
+                        <div class="liunian-item">
+                            <div class="liunian-dir">东北</div>
+                            <div class="liunian-star">${flyStars.positions.northeast ? flyStars.names[flyStars.positions.northeast] : '-'}</div>
+                        </div>
+                        <div class="liunian-item">
+                            <div class="liunian-dir">东</div>
+                            <div class="liunian-star">${flyStars.positions.east ? flyStars.names[flyStars.positions.east] : '-'}</div>
+                        </div>
+                        <div class="liunian-item">
+                            <div class="liunian-dir">东南</div>
+                            <div class="liunian-star">${flyStars.positions.southeast ? flyStars.names[flyStars.positions.southeast] : '-'}</div>
+                        </div>
+                        <div class="liunian-item">
+                            <div class="liunian-dir">中</div>
+                            <div class="liunian-star">${flyStars.names[flyStars.centerStar]}</div>
+                        </div>
+                        <div class="liunian-item">
+                            <div class="liunian-dir">西北</div>
+                            <div class="liunian-star">${flyStars.positions.northwest ? flyStars.names[flyStars.positions.northwest] : '-'}</div>
+                        </div>
+                        <div class="liunian-item">
+                            <div class="liunian-dir">西</div>
+                            <div class="liunian-star">${flyStars.positions.west ? flyStars.names[flyStars.positions.west] : '-'}</div>
+                        </div>
+                        <div class="liunian-item">
+                            <div class="liunian-dir">西南</div>
+                            <div class="liunian-star">${flyStars.positions.southwest ? flyStars.names[flyStars.positions.southwest] : '-'}</div>
+                        </div>
+                        <div class="liunian-item">
+                            <div class="liunian-dir">南</div>
+                            <div class="liunian-star">${flyStars.positions.south ? flyStars.names[flyStars.positions.south] : '-'}</div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 0.8rem;">
+                        💡 红色=吉星 | 黑色=凶星 | 绿色=平星
+                    </p>
+                `;
+                grid.appendChild(liunianInfo);
+            }
 
             // 如果有八字结果，显示命格分析在第一行
             if (baziResult) {
@@ -1919,12 +2091,13 @@
         }
 
         // 状态
-        const state = { scene: null, direction: null, fortune: null };
+        const state = { scene: null, direction: null, fortune: null, liunian: null };
 
         const stepContents = [
             document.getElementById('step1'),
             document.getElementById('step2'),
             document.getElementById('step3'),
+            document.getElementById('step33'),
             document.getElementById('step35'),
             document.getElementById('step4')
         ];
@@ -2066,9 +2239,23 @@
         document.getElementById('next2').addEventListener('click', () => updateSteps(3));
         document.getElementById('back3').addEventListener('click', () => updateSteps(2));
         document.getElementById('next3').addEventListener('click', () => {
-            // 先初始化八字选项
+            updateSteps(3.3);
+        });
+
+        // 流年步骤
+        document.getElementById('back33').addEventListener('click', () => updateSteps(3));
+
+        document.getElementById('skipLiunian').addEventListener('click', () => {
+            state.liunian = null;
             initBaziOptions();
-            updateSteps(4);
+            updateSteps(3.5);
+        });
+
+        document.getElementById('next33').addEventListener('click', () => {
+            const liunianYear = document.getElementById('liunianYear').value;
+            state.liunian = liunianYear ? parseInt(liunianYear) : null;
+            initBaziOptions();
+            updateSteps(3.5);
         });
 
         // 八字步骤
